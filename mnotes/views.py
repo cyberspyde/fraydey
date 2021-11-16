@@ -42,7 +42,7 @@ def takenote(request):
             pub_date = form.cleaned_data.get('pub_date')
             nametestvalue = form.cleaned_data.get('nametest')
             form.save()
-            print(nametestvalue)
+
             return redirect(to='/takenoteview/')
         
     context = {'form' : form}
@@ -53,7 +53,6 @@ def createproduct(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         BuyDebtForm = BuyOnDebtForm(request.POST)
-        print(BuyDebtForm.errors, form.errors)
         if form.is_valid() and BuyDebtForm.is_valid():
             product_name = form.cleaned_data.get('product_name')
             product_price_initial = form.cleaned_data.get('product_price_initial')
@@ -84,10 +83,10 @@ def createproduct(request):
             product.save()
 
             if isdebt == True:
-                print("Qarzga olingan mahsulot yaratilmoqda")
+
 
                 BuyOnDebt.objects.create(user=product.user, product_name=product_name, product_count=product_count, product_price=product_price_initial, owner_name=owner_name, owner_phone=owner_phone, due_date=due_date, paid_amount=paid_amount, left_amount=left_amount, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
-                print("Qarz object yaratildi")
+
             messages.success(request, 'Mahsulot muvaffaqiyatli yaratildi')
             return redirect('/inventory/')
         else:
@@ -165,7 +164,7 @@ def productsold(request, id):
     if request.method == 'POST':
         SoldProductForm = ProductSoldForm(request.POST)
         SellDebtForm = SellOnDebtForm(request.POST)
-        print("Errors : ", SoldProductForm.errors, SellDebtForm.errors)
+        
         if SoldProductForm.is_valid() and SellDebtForm.is_valid():
 
             sold_price = SoldProductForm.cleaned_data.get('product_sold_price')
@@ -180,7 +179,7 @@ def productsold(request, id):
             ispartlypaid = SellDebtForm.cleaned_data.get('ispartlypaid')
             paid_amount = SellDebtForm.cleaned_data.get('paid_amount')
             if(paid_amount is None):
-                print("Paid amount is none")
+                
                 paid_amount = 0
                 left_amount = 0
             else:
@@ -203,7 +202,7 @@ def productsold(request, id):
 
                 profit = (sold_price - initial_price)*sold_count
 
-                print(f"Your profit is : {profit}")
+                
 
                 ProductSold.objects.create(product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt)
  
@@ -213,7 +212,7 @@ def productsold(request, id):
                 messages.success(request, 'Sotilgan mahsulot muvaffaqiyatli saqlandi.')
 
         else:
-            print("Forms are not valid")
+            
             profit = 0
     else:
         SoldProductForm = ProductSoldForm() 
@@ -223,10 +222,10 @@ def productsold(request, id):
     sold_product_list = ProductSold.objects.filter(product_sold_id=id)
     total_profit = 0
     for value in sold_product_list:
-        print(value.profit)
+        
         total_profit += value.profit
 
-    print(f"Total Profit : {total_profit}")
+    
     context = {'product' : product, 'SoldProductForm' : SoldProductForm, 'profit' : profit, 'SellDebtForm' : SellDebtForm}    
     return render(request, 'mnotes/productsold.html', context)
 
@@ -237,7 +236,7 @@ def editproduct(request, id):
         form = ProductForm(request.POST, request.FILES, instance=product )
   
         if form.is_valid():
-            print(form.errors)
+            
             product_img = form.cleaned_data.get('product_img')
 
             form.save()
@@ -250,9 +249,6 @@ def editproduct(request, id):
     else:
         form = ProductForm(instance=product)
 
-
-    if request.method == 'GET':
-        print("GET METHOD")
 
     context = {'product' : product, 'form' : form}
     return render(request, 'mnotes/editproduct.html', context)
@@ -295,7 +291,6 @@ def givedebtselect(request):
 
 def returndebt(request, id):
     debt = SellOnDebt.objects.get(pk=id)
-    print(debt.isfullypaid)
     if request.method == 'POST':
         debt.isfullypaid = True
         debt.save()
@@ -307,7 +302,6 @@ def returndebt(request, id):
 
 def paydebt(request, id):
     debt = BuyOnDebt.objects.get(pk=id)
-    print(debt.isfullypaid)
     if request.method == 'POST':
         debt.isfullypaid = True
         debt.save()
@@ -320,7 +314,6 @@ def getdebt(request, id):
     product = Product.objects.get(pk=id)
     if request.method == 'POST':
         form = BuyOnDebtForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             paid_amount = form.cleaned_data.get('paid_amount')
             product_count = form.cleaned_data.get('product_count')
@@ -345,8 +338,7 @@ def getdebt(request, id):
             BuyOnDebt.objects.create(user=request.user, product_name=product.product_name, product_count=product_count, product_price=product_price, paid_amount=paid_amount, left_amount=left_amount, ispartlypaid=ispartlypaid, isfullypaid=isfullypaid, due_date=due_date, owner_name=owner_name, owner_phone=owner_phone)
             messages.success(request, 'Qarzga olingan mahsulot muvaffaqiyatli saqlandi.')
             redirect('debts')
-        else:
-            print("Form is not valid")
+
     else:
         form = BuyOnDebtForm()
 
@@ -376,8 +368,7 @@ def profile(request):
         profile_form = UpdateProfileForm(instance=request.user.profile)
     
     profile = Profile.objects.filter(user=request.user)
-    for value in profile:
-        print(value.image.url)
+
 
     return render(request, 'mnotes/profile.html', {'user' : user, 'user_form' : user_form, 'profile_form' : profile_form, 'profile' : profile})
 
