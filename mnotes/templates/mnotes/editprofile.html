@@ -1,0 +1,36 @@
+{% extends 'mnotes/index.html' %}
+
+{% block title %} Profilni yangilash {% endblock title %}
+ 
+{% block content %}
+
+<h2>Profilni yangilash formasi</h2>
+ <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+
+                       
+                        <label class="small mb-1">Nom:</label>
+                            {{ user_form.username }} 
+
+                            {{ profile_form.as_p}}
+
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <br><br>
+			
+			<div style="width:100%; display: flex; justify-content: center; align-items: center;">
+				<button style="margin: 10px;" type="submit" class="btn btn-dark">O'zgarishlarni saqlash</button>
+			    <button style="margin: 10px;" type="reset" class="btn btn-dark ">O'z xoliga qaytarish</button>
+			</div>
+			<div style="width:100%; display: flex; justify-content: center; align-items: center;">
+				<a href="{% url 'password_change' %}" class="link-primary" >Parolni o'zgartirish </a>
+			</div>
+        </form>
+    </div>
+{% endblock %}

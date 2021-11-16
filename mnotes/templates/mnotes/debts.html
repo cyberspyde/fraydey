@@ -1,0 +1,286 @@
+{% extends 'mnotes/index.html' %}
+
+{% block title %} Qarzlar {% endblock title %}
+
+{% block content %}
+<!-- Classic tabs -->
+<div class="classic-tabs border rounded pt-1">
+
+  <ul class="nav tabs-primary nav-justified" id="advancedTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active show border" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Odamlar qarzlari</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link border" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Do'kon qarzlari</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="advancedTabContent">
+    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+<!-- DESCRIPTION PAGE -->
+<table class="table table-hover tableOutputSellOnDebt">  <br>
+  <div class="text-center mx-auto w-75">
+  <input type="text" id="searchFieldSellOnDebt" name="" class="form-control text-center" placeholder="Mahsulotni qidiring">
+</div>
+<br>
+  <h5 class="text-center text-uppercase"> <b> Qarzga berilgan mahsulotlar </b></h5>
+  <hr>  
+  <div class="text-center mt-2 mb-2"><a href="{% url 'givedebtselect' %}" class="btn btn-primary"> Qarzga mahsulot berish</a></div>
+  <thead>
+    <tr>
+      <th scope="col">Qarzdor ismi</th>
+      <th scope="col">Mahsulot nomi</th>
+      <th scope="col">Aloqa</th>
+    </tr>
+  </thead>
+  {% for selldebt in sellondebt_list reversed %}
+
+{% if selldebt.isfullypaid %}
+  <tbody class="bg-success">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+{% elif selldebt.ispartlypaid %}
+  <tbody class="bg-warning">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+{% else %}
+  <tbody class="bg-danger">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+  {% endif %}
+{% endfor %}
+
+</table>   
+
+<table class="table table-hover appTableSellOnDebt"> 
+  <thead>
+    <tr>
+      <th scope="col">Qarzdor ismi</th>
+      <th scope="col">Mahsulot nomi</th>
+      <th scope="col">Aloqa</th>
+    </tr>
+  </thead>
+  {% for selldebt in sellondebt_list reversed %}
+
+{% if selldebt.isfullypaid %}
+  <tbody class="bg-success">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+{% elif selldebt.ispartlypaid %}
+  <tbody class="bg-warning">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+{% else %}
+  <tbody class="bg-danger">
+    <tr>
+      <td>{{selldebt.customer_name}}</td>
+      <td>{{selldebt.product_name}}</td>
+      <td>{{selldebt.customer_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{selldebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+  {% endif %}
+{% endfor %}
+
+</table>   
+
+</div>
+<!-- SellOnDebt PAGE -->
+    
+<!-- BuyOnDebt Page -->
+
+<div class="tab-pane fade ml-0" id="info" role="tabpanel" aria-labelledby="info-tab">
+<table class="table table-hover">
+  <br>
+  <div class="text-center mx-auto w-75">
+  <input type="text" id="searchFieldBuyOnDebt" name="" class="form-control text-center" placeholder="Mahsulotni qidiring">
+</div>
+  <br>
+  <h5 class="text-center text-uppercase"> <b> Qarzga olingan mahsulotlar </b></h5>
+  <hr>  
+  <div class="text-center mt-2 mb-2"><a href="{% url 'getdebtselect' %}" class="btn btn-primary"> Qarzga mahsulot olish</a></div>
+
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Narx</th>
+      <th scope="col">Aloqa</th>
+    </tr>
+  </thead>
+
+  {% for buydebt in buyondebt_list reversed %}
+
+  {% if buydebt.isfullypaid %}
+  <tbody class="bg-success">
+    <tr>
+      <td>{{buydebt.product_name}}</td>
+      <td>{{buydebt.product_price}} sum</td>
+      <td>{{buydebt.owner_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{buydebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+
+  {% elif buydebt.ispartlypaid %}
+
+  <tbody class="bg-warning">
+    <tr>
+      <td>{{buydebt.product_name}}</td>
+      <td>{{buydebt.product_price}} sum</td>
+      <td>{{buydebt.owner_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{buydebt.id}}"> (batafsil) </button></td>
+    </tr>
+  </tbody>
+
+  {% else %}
+
+  <tbody class="bg-danger">
+    <tr>
+      <td>{{buydebt.product_name}}</td>
+      <td>{{buydebt.product_price}} sum</td>
+      <td>{{buydebt.owner_phone}} <button type="button" class="link-primary" data-toggle="modal" data-target="#{{buydebt.id}}"> (batafsil) </button></td>
+      
+    </tr>
+  </tbody>
+  {% endif %}
+
+  {% endfor %}
+
+
+
+</table>
+    </div>
+  </div>
+
+</div>
+<!-- Classic tabs -->
+
+<script src="/static/js/main.js"></script>
+
+
+<!-- Modal for give selldebt-->
+{% for selldebt in sellondebt_list %}
+<div class="modal fade" id="{{selldebt.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">To'liq ma'lumot</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        {% if selldebt.isfullypaid %}
+        <h3 class="text-success">Qarz to'langan</h3>
+        <h6 class="">Mahsulot Nomi : {{selldebt.product_name}}</h6>
+        <h6 class="">Mahsulot Tan Narxi : {{selldebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{selldebt.customer_name}}</h6>
+        <h6 class="">Qarzga berilgan sanasi : {{selldebt.given_date}}</h6>
+        <h6 class="">Pulni qabul qilish sanasi : {{selldebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{selldebt.customer_phone}}</h6>
+
+        {% elif selldebt.ispartlypaid %}
+        <h3 class="text-warning">Qarzni ma'lum qismi to'langan</h3>
+        <h6 class="">Mahsulot Nomi : {{selldebt.product_name}}</h6>
+        <h6 class="">Mahsulot Tan Narxi : {{selldebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{selldebt.customer_name}}</h6>
+        <h6 class="">Qarzga berilgan sanasi : {{selldebt.given_date}}</h6>
+        <h6 class="">Pulni qabul qilish sanasi : {{selldebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{selldebt.customer_phone}}</h6>
+        <h6 class="">To'langan pul : {{selldebt.paid_amount}}</h6>
+        <h6 class="">To'lanmagan pul : {{selldebt.left_amount}}</h6>
+
+        {% else %}
+
+        <h3 class="text-danger">Qarz to'lanmagan</h3>
+        <h6 class="">Mahsulot Nomi : {{selldebt.product_name}}</h6>
+        <h6 class="">Mahsulot Tan Narxi : {{selldebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{selldebt.customer_name}}</h6>
+        <h6 class="">Qarzga berilgan sanasi : {{selldebt.given_date}}</h6>
+        <h6 class="">Pulni qabul qilish sanasi : {{selldebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{selldebt.customer_phone}}</h6>
+
+        {% endif %}
+
+      </div>
+      <div class="modal-footer">
+          <form action="{% url 'returndebt' selldebt.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" name="" value="To'ladim">
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Modal for BuyOnDebt -->
+{%for buydebt in buyondebt_list %}
+<div class="modal fade" id="{{buydebt.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Qarzga berilgan mahsulot haqida to'liq ma'lumot</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        {% if buydebt.isfullypaid %}
+        <h3 class="text-success">Qarz to'langan</h3>
+        <h6 class="">Nomi : {{buydebt.product_name}}</h6>
+        <h6 class="">Narxi : {{buydebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{buydebt.owner_name}}</h6>
+        <h6 class="">Qarzga olingan sanasi : {{buydebt.date_bought}}</h6>
+        <h6 class="">Qarzni to'lash sanasi : {{buydebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{buydebt.owner_phone}}</h6>
+
+        {% elif buydebt.ispartlypaid %}
+        <h3 class="text-warning">Qarzni ma'lum qismi to'langan</h3>
+        <h6 class="">Nomi : {{buydebt.product_name}}</h6>
+        <h6 class="">Narxi : {{buydebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{buydebt.owner_name}}</h6>
+        <h6 class="">Qarzga olingan sanasi : {{buydebt.date_bought}}</h6>
+        <h6 class="">Qarzni to'lash sanasi : {{buydebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{buydebt.owner_phone}}</h6>
+        {% else %}
+        <h3 class="text-danger">Qarz to'lanmagan</h3>
+        <h6 class="">Nomi : {{buydebt.product_name}}</h6>
+        <h6 class="">Narxi : {{buydebt.product_price}}</h6>
+        <h6 class="">Qarz oluvchi ismi : {{buydebt.owner_name}}</h6>
+        <h6 class="">Qarzga olingan sanasi : {{buydebt.date_bought}}</h6>
+        <h6 class="">Qarzni to'lash sanasi : {{buydebt.due_date}}</h6>
+        <h6 class="">Telefon nomer : {{buydebt.owner_phone}}</h6>
+        {%endif%}
+
+      </div>
+      <div class="modal-footer">
+        <form action="{% url 'paydebt' buydebt.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" name="" value="To'ladim">
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
+          
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
