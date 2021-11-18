@@ -48,7 +48,7 @@
 
        
         {% if user.is_authenticated %}        
-        <form class="form-inline my-2 my-lg-0 d-flex justify-content-center" action="{% url 'searchproduct' %}" method="POST"> 
+        <form class="form-inline my-2 my-lg-0 d-flex justify-content-center" action="{% url 'searchfunction' %}" method="POST"> 
             {% csrf_token %}
             <input class="form-control mr-sm-2" type="text" placeholder="Mahsulotni izlash" name="searched"> 
             <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
@@ -89,10 +89,5 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> 
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
         
-        <script src="/static/js/search-product-sold.js"></script>
-        <script src="/static/js/search-product-inventory.js"></script>
-        <script src="/static/js/search-product-getdebt.js"></script>
-        <script src="/static/js/search-product-givedebt.js"></script>
-        <script src="/static/js/search-debts.js"></script>
     </body>
 </html>

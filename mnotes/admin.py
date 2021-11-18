@@ -20,7 +20,7 @@ class SellOnDebtAdmin(admin.ModelAdmin):
 	list_display = ['product_name', 'customer_name', 'user', 'due_date', 'given_date']
 
 class BuyOnDebtAdmin(admin.ModelAdmin):
-	list_display = ['product_name', 'owner_name', 'user', 'date_bought']
+	list_display = ['id','product_name', 'owner_name', 'user', 'date_bought']
 
 admin.site.register(Notes, ComputerAdmin)
 admin.site.register(Product, ProductAdmin)

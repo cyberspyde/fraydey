@@ -6,7 +6,6 @@ from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = [
@@ -25,7 +24,9 @@ urlpatterns = [
    	path('password-change/', changepassword.as_view(), name='password_change'),
    	path('productview/<int:id>', views.productview, name='productview'),
 	path('editproduct/<int:id>', views.editproduct, name='editproduct'),
-	path('searchproduct', views.searchproduct, name='searchproduct'),
+	path('searchfunction', views.searchfunction, name='searchfunction'),
+	path('searchbuydebt', views.searchbuydebt, name='searchbuydebt'),
+	path('searchselldebt', views.searchselldebt, name='searchselldebt'),
 	path('deleteproduct/<int:id>', views.deleteproduct, name='deleteproduct'),
 	path('sellproduct/', views.sellproduct, name='sellproduct'),
 	path('productsold/<int:id>', views.productsold, name='productsold'),
@@ -37,11 +38,11 @@ urlpatterns = [
 	path('paydebt/<int:id>', views.paydebt, name='paydebt'),
 	path('returndebt/<int:id>', views.returndebt, name='returndebt'),
 	path('editprofile/<str:username>', views.editprofile, name='editprofile'),
-	path('search-onrealtime', csrf_exempt(views.search_onrealtime), name='search_onrealtime'),
-	path('search-product', csrf_exempt(views.search_onrealtime), name='search-product'),
-	path('search-product-buyondebt', csrf_exempt(views.search_onrealtimebuyondebt), name='search-product-buyondebt'),
-	path('search-product-sellondebt', csrf_exempt(views.search_onrealtimesellondebt), name='search-product-sellondebt'),
-	
+	path('selldebtview/<int:id>', views.selldebtview, name='selldebtview'),
+	path('buydebtview/<int:id>', views.buydebtview, name='buydebtview'),
+	path('searchsoldproduct', views.searchsoldproduct, name='searchsoldproduct'),
+	path('searchbuydebtselect', views.searchbuydebtselect, name='searchbuydebtselect'),
+	path('searchselldebtselect', views.searchselldebtselect, name='searchselldebtselect'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

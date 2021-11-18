@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import SellOnDebtForm, BuyOnDebtForm, ProductSoldForm, NotesForm, ProductForm, SignUpForm, LoginForm, UpdateProfileForm, UpdateUserForm
 from .models import Notes, Product, ProductSold, Profile, SellOnDebt, BuyOnDebt, User
+from django.db.models import Q
 from django.contrib import messages
 from django.views import View
 from django.urls import reverse_lazy
@@ -103,48 +104,83 @@ def productview(request, id):
     context = {'product_props' : product_props}
     return render(request, 'mnotes/productview.html', context)
 
-def searchproduct(request):
+def selldebtview(request, id):
+    selldebt_props = SellOnDebt.objects.filter(user=request.user, pk=id)
+
+    context = {'selldebt_props' : selldebt_props }
+    return render(request, 'mnotes/selldebtview.html', context)
+
+def buydebtview(request, id):
+    buydebt_props = BuyOnDebt.objects.filter(user=request.user, pk=id)
+
+    context = {'buydebt_props' : buydebt_props }
+    return render(request, 'mnotes/buydebtview.html', context)
+
+def searchfunction(request):
     if request.method == 'POST':
         searched = request.POST['searched']
-        product = Product.objects.filter(product_name__contains=searched, user=request.user)
+        products = Product.objects.filter(product_name__contains=searched, user=request.user)
     else:
         searched = ""
-    context = {'searched' : searched, 'product' : product}
-    return render(request, 'mnotes/searchproduct.html', context)
+        products = ""
+    context = { 'searched' : searched, 'products' : products}
+    return render(request, 'mnotes/searchfunction.html', context)
 
-def search_onrealtime(request):  
+def searchsoldproduct(request):
     if request.method == 'POST':
+        searched = request.POST['searched']
+        products = Product.objects.filter(product_name__contains=searched, user=request.user)
+    else:
+        searched = ""
+        products = ""
+    context = { 'searched' : searched, 'products' : products}
+    return render(request, 'mnotes/searchsoldproduct.html', context)
 
-        search_str = json.loads(request.body).get('searchText')
-        products = Product.objects.filter(product_name__contains=search_str, user=request.user)
-        data = products.values()
-
-        buyondebt_list = BuyOnDebt.objects.filter(product_name__contains=search_str, user=request.user)
-        buyondebt_data = buyondebt_list.values()
-        sellondebt_list = SellOnDebt.objects.filter(product_name__contains=search_str, user=request.user)
-        sellondebt_data = sellondebt_list.values()
-
-        
-
-    return JsonResponse(list(data), safe=False)
-
-def search_onrealtimebuyondebt(request):
+def searchbuydebt(request):
     if request.method == 'POST':
-        search_str = json.loads(request.body).get('searchText')
+        searchedbuydebt = request.POST['searchedbuydebt']
+        buydebt = BuyOnDebt.objects.filter( Q(product_name__contains=searchedbuydebt, user=request.user) | Q(owner_name__contains=searchedbuydebt, user=request.user))
+        buydebt_list = BuyOnDebt.objects.filter(user=request.user)
+    else:
+        searchedbuydebt = ""
+        buydebt = ""
+        buydebt_list = ""
 
-        buyondebt_list = BuyOnDebt.objects.filter(product_name__contains=search_str, user=request.user)
-        buyondebt_data = buyondebt_list.values()
+    context = {'searchedbuydebt' : searchedbuydebt, 'buydebt' : buydebt, 'buydebt_list' : buydebt_list}
+    return render(request, 'mnotes/searchbuydebt.html', context)
 
-    return JsonResponse(list(buyondebt_data), safe=False)
-
-def search_onrealtimesellondebt(request):
+def searchbuydebtselect(request):
     if request.method == 'POST':
-        search_str = json.loads(request.body).get('searchText')
+        searchedbuydebtselect = request.POST['searchedbuydebtselect']
+        buydebt = Product.objects.filter(product_name__contains=searchedbuydebtselect, user=request.user)
+    else:
+        searchedbuydebtselect = ""
+        buydebt = ""
+    context = { 'searchedbuydebtselect' : searchedbuydebtselect, 'buydebt' : buydebt}
+    return render(request, 'mnotes/searchbuydebtselect.html', context)
 
-        sellondebt_list = SellOnDebt.objects.filter(product_name__contains=search_str, user=request.user)
-        sellondebt_data = sellondebt_list.values()
+def searchselldebt(request):
+    if request.method == 'POST':
+        searchedselldebt = request.POST['searchedselldebt']
+        selldebt = SellOnDebt.objects.filter( Q(product_name__contains=searchedselldebt, user=request.user) | Q(customer_name__contains=searchedselldebt, user=request.user))
+        selldebt_list = SellOnDebt.objects.filter(user=request.user)
+    else:
+        searchedselldebt = ""
+        selldebt = ""
+        selldebt_list = ""
 
-    return JsonResponse(list(sellondebt_data), safe=False)
+    context = {'searchedselldebt' : searchedselldebt, 'selldebt' : selldebt, 'selldebt_list' : selldebt_list}
+    return render(request, 'mnotes/searchselldebt.html', context)
+
+def searchselldebtselect(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        selldebt = Product.objects.filter(product_name__contains=searched, user=request.user)
+    else:
+        searched = ""
+        selldebt = ""
+    context = { 'searched' : searched, 'selldebt' : selldebt}
+    return render(request, 'mnotes/searchselldebtselect.html', context)
 
 def sellproduct(request):
     product_list = Product.objects.filter(user=request.user)
@@ -305,9 +341,11 @@ def paydebt(request, id):
     if request.method == 'POST':
         debt.isfullypaid = True
         debt.save()
+        messages.success(request, 'Qarz muvaffaqiyatli to`landi')
         redirect('debts')
     else:
         redirect('debts')
+        print('errors')
     return redirect('debts')
 
 def getdebt(request, id):

@@ -97,7 +97,7 @@ class ProductSoldForm(forms.ModelForm):
     class Meta:
         model = ProductSold
         fields = ['product_sold_price','product_sold_count']
-        exclude = ('user', 'given_date')
+        exclude = ('user', 'given_date', 'product_name')
         widgets = {
             'product_sold_price' : forms.NumberInput(attrs={'placeholder' : 'Sotilgan mahsulot narxi', 'class' : 'form-control'}),
             'product_sold_count' : forms.NumberInput(attrs={'placeholder' : 'Sotilgan mahsulot soni', 'class' : 'form-control'}),
