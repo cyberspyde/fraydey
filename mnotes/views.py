@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .forms import SellOnDebtForm, BuyOnDebtForm, ProductSoldForm, NotesForm, ProductForm, SignUpForm, LoginForm, UpdateProfileForm, UpdateUserForm
-from .models import Notes, Product, ProductSold, Profile, SellOnDebt, BuyOnDebt, User
+from .forms import  VendorForm, SellOnDebtForm, BuyOnDebtForm, ProductSoldForm, NotesForm, ProductForm, SignUpForm, LoginForm, UpdateProfileForm, UpdateUserForm
+from .models import  Vendor, Notes, Product, ProductSold, Profile, SellOnDebt, BuyOnDebt, User
 from django.db.models import Q
 from django.contrib import messages
 from django.views import View
@@ -11,12 +11,16 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth.decorators import login_required
 import socketserver, json
 from wsgiref import handlers
+from datetime import date, timedelta
 socketserver.BaseServer.handle_error = lambda *args, **kwargs: None
 handlers.BaseHandler.log_exception = lambda *args, **kwargs: None
 # Create your views here.
 
+@login_required
 def index(request):
-    return render(request, 'mnotes/index.html')
+    username = User.objects.get(pk=request.user.id)
+
+    return render(request, 'mnotes/index.html', {'username' : username})
 
 def takenoteview(request):
     return HttpResponse("Entered text : " + str(request.POST.get('nametest')))
@@ -30,7 +34,8 @@ def savednotes(request):
 @login_required
 def inventory(request):
     product_list = Product.objects.filter(user=request.user)
-    context = {'product_list' : product_list}
+    username = User.objects.get(pk=request.user.id)
+    context = {'product_list' : product_list, 'user_name' : username}
     return render(request, 'mnotes/inventory.html', context)
 
 @login_required
@@ -54,6 +59,7 @@ def createproduct(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         BuyDebtForm = BuyOnDebtForm(request.POST)
+        print(form.errors, BuyDebtForm.errors)
         if form.is_valid() and BuyDebtForm.is_valid():
             product_name = form.cleaned_data.get('product_name')
             product_price_initial = form.cleaned_data.get('product_price_initial')
@@ -86,7 +92,7 @@ def createproduct(request):
             if isdebt == True:
 
 
-                BuyOnDebt.objects.create(user=product.user, product_name=product_name, product_count=product_count, product_price=product_price_initial, owner_name=owner_name, owner_phone=owner_phone, due_date=due_date, paid_amount=paid_amount, left_amount=left_amount, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
+                BuyOnDebt.objects.create(username=product.user, product_name=product_name, product_count=product_count, product_price=product_price_initial, owner_name=owner_name, owner_phone=owner_phone, due_date=due_date, paid_amount=paid_amount, left_amount=left_amount, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
 
             messages.success(request, 'Mahsulot muvaffaqiyatli yaratildi')
             return redirect('/inventory/')
@@ -105,13 +111,13 @@ def productview(request, id):
     return render(request, 'mnotes/productview.html', context)
 
 def selldebtview(request, id):
-    selldebt_props = SellOnDebt.objects.filter(user=request.user, pk=id)
+    selldebt_props = SellOnDebt.objects.get(username=request.user, pk=id)
 
     context = {'selldebt_props' : selldebt_props }
     return render(request, 'mnotes/selldebtview.html', context)
 
 def buydebtview(request, id):
-    buydebt_props = BuyOnDebt.objects.filter(user=request.user, pk=id)
+    buydebt_props = BuyOnDebt.objects.filter(username=request.user, pk=id)
 
     context = {'buydebt_props' : buydebt_props }
     return render(request, 'mnotes/buydebtview.html', context)
@@ -129,7 +135,7 @@ def searchfunction(request):
 def searchsoldproduct(request):
     if request.method == 'POST':
         searched = request.POST['searched']
-        products = Product.objects.filter(product_name__contains=searched, user=request.user)
+        products = Product.objects.filter(product_name__contains=searched, username=request.user)
     else:
         searched = ""
         products = ""
@@ -139,8 +145,8 @@ def searchsoldproduct(request):
 def searchbuydebt(request):
     if request.method == 'POST':
         searchedbuydebt = request.POST['searchedbuydebt']
-        buydebt = BuyOnDebt.objects.filter( Q(product_name__contains=searchedbuydebt, user=request.user) | Q(owner_name__contains=searchedbuydebt, user=request.user))
-        buydebt_list = BuyOnDebt.objects.filter(user=request.user)
+        buydebt = BuyOnDebt.objects.filter( Q(product_name__contains=searchedbuydebt, username=request.user) | Q(owner_name__contains=searchedbuydebt, username=request.user))
+        buydebt_list = BuyOnDebt.objects.filter(username=request.user)
     else:
         searchedbuydebt = ""
         buydebt = ""
@@ -152,7 +158,7 @@ def searchbuydebt(request):
 def searchbuydebtselect(request):
     if request.method == 'POST':
         searchedbuydebtselect = request.POST['searchedbuydebtselect']
-        buydebt = Product.objects.filter(product_name__contains=searchedbuydebtselect, user=request.user)
+        buydebt = Product.objects.filter(product_name__contains=searchedbuydebtselect, username=request.user)
     else:
         searchedbuydebtselect = ""
         buydebt = ""
@@ -162,8 +168,8 @@ def searchbuydebtselect(request):
 def searchselldebt(request):
     if request.method == 'POST':
         searchedselldebt = request.POST['searchedselldebt']
-        selldebt = SellOnDebt.objects.filter( Q(product_name__contains=searchedselldebt, user=request.user) | Q(customer_name__contains=searchedselldebt, user=request.user))
-        selldebt_list = SellOnDebt.objects.filter(user=request.user)
+        selldebt = SellOnDebt.objects.filter( Q(product_name__contains=searchedselldebt, username=request.user) | Q(customer_name__contains=searchedselldebt, username=request.user))
+        selldebt_list = SellOnDebt.objects.filter(username=request.user)
     else:
         searchedselldebt = ""
         selldebt = ""
@@ -175,7 +181,7 @@ def searchselldebt(request):
 def searchselldebtselect(request):
     if request.method == 'POST':
         searched = request.POST['searched']
-        selldebt = Product.objects.filter(product_name__contains=searched, user=request.user)
+        selldebt = Product.objects.filter(product_name__contains=searched, username=request.user)
     else:
         searched = ""
         selldebt = ""
@@ -208,6 +214,7 @@ def productsold(request, id):
             isdebt = SoldProductForm.cleaned_data.get('isdebt')
             user = request.user
 
+            product_name = Product.objects.get(pk=id).product_name
             customer_name = SellDebtForm.cleaned_data.get('customer_name')
             customer_phone = SellDebtForm.cleaned_data.get('customer_phone')
             due_date = SellDebtForm.cleaned_data.get('due_date')
@@ -240,12 +247,14 @@ def productsold(request, id):
 
                 
 
-                ProductSold.objects.create(product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt)
- 
+                ProductSold.objects.create(product_name=product_name, username=request.user, product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt)
+                    
                 if(isdebt):
-                    SellOnDebt.objects.create(user=request.user, product_name=product.product_name, product_price=product.product_price_initial, product_count=sold_count, customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid, paid_amount=paid_amount, left_amount=left_amount)
-               
+                    SellOnDebt.objects.create(username=request.user, product_name=product.product_name, product_price=product.product_price_initial, product_count=sold_count, customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid, paid_amount=paid_amount, left_amount=left_amount)
+                
+
                 messages.success(request, 'Sotilgan mahsulot muvaffaqiyatli saqlandi.')
+                redirect('inventory')
 
         else:
             
@@ -295,8 +304,8 @@ def sales(request):
 
 @login_required
 def debts(request):
-    sellondebt_list = SellOnDebt.objects.filter(user=request.user)
-    buyondebt_list = BuyOnDebt.objects.filter(user=request.user)
+    sellondebt_list = SellOnDebt.objects.filter(username=request.user)
+    buyondebt_list = BuyOnDebt.objects.filter(username=request.user)
     product_list = Product.objects.filter(user=request.user)
 
 
@@ -317,8 +326,8 @@ def givedebt(request, id):
     return render(request, 'mnotes/givedebt.html', context)
 
 
-def givedebtselect(request):
-    product_list = Product.objects.filter(user=request.user)
+def givedebtselect(request, username):
+    product_list = Product.objects.filter(username=username)
     
     context = { 'product_list' : product_list }
     return render(request, 'mnotes/givedebtselect.html', context)
@@ -373,9 +382,10 @@ def getdebt(request, id):
                 left_amount = 0
             else:
                 left_amount = product_count * product_price - paid_amount
-            BuyOnDebt.objects.create(user=request.user, product_name=product.product_name, product_count=product_count, product_price=product_price, paid_amount=paid_amount, left_amount=left_amount, ispartlypaid=ispartlypaid, isfullypaid=isfullypaid, due_date=due_date, owner_name=owner_name, owner_phone=owner_phone)
+            BuyOnDebt.objects.create(username=request.user, product_name=product.product_name, product_count=product_count, product_price=product_price, paid_amount=paid_amount, left_amount=left_amount, ispartlypaid=ispartlypaid, isfullypaid=isfullypaid, due_date=due_date, owner_name=owner_name, owner_phone=owner_phone)
+            
             messages.success(request, 'Qarzga olingan mahsulot muvaffaqiyatli saqlandi.')
-            redirect('debts')
+            return redirect('debts')
 
     else:
         form = BuyOnDebtForm()
@@ -392,40 +402,35 @@ def getdebtselect(request):
 
 @login_required
 def profile(request):
-    user = request.user
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, 'Akkountingiz muvaffaqiyatli yangilandi')
-            #return render(request, 'mnotes/profile.html', {'user_form' : user_form, 'profile_form' : profile_form, 'img_obj': img_obj})
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
-    
-    profile = Profile.objects.filter(user=request.user)
+    user_props = Profile.objects.get(user=request.user)
+    vendor_props = Vendor.objects.get(username=request.user)
+
+    return render(request, 'mnotes/profile.html', {'user_props' : user_props, 'vendor_props' : vendor_props})
 
 
-    return render(request, 'mnotes/profile.html', {'user' : user, 'user_form' : user_form, 'profile_form' : profile_form, 'profile' : profile})
-
+@login_required
 def editprofile(request, username):
-    user = request.user
+    user = Vendor.objects.get(username=username)
+
     if request.method == 'POST':
+        vendor_Form = VendorForm(request.POST, instance=user)
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
+        print(vendor_Form.errors)
+        if user_form.is_valid() and profile_form.is_valid() and vendor_Form.is_valid():
             user_form.save()
             profile_form.save()
+            vendor_Form.save()
             messages.success(request, 'Akkountingiz muvaffaqiyatli yangilandi')
-            #return render(request, 'mnotes/profile.html', {'user_form' : user_form, 'profile_form' : profile_form, 'img_obj': img_obj})
+            return redirect('profile')
+        else:
+            print('Forms are not valid')    #return render(request, 'mnotes/profile.html', {'user_form' : user_form, 'profile_form' : profile_form, 'img_obj': img_obj})
     else:
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
-    
+        vendor_Form = VendorForm(instance=user)
     profile = Profile.objects.filter(user=request.user)
-    context = {'user' : user, 'user_form' : user_form, 'profile_form' : profile_form, 'profile' : profile}
+    context = { 'vendor_Form' : vendor_Form, 'user' : user, 'user_form' : user_form, 'profile_form' : profile_form, 'profile' : profile}
     return render(request, 'mnotes/editprofile.html', context)
 
 
@@ -449,6 +454,7 @@ class signup(View):
     form_class = SignUpForm
     initial = {'key' : 'value'}
     template_name = 'mnotes/signup.html'
+    form_class_vendor = VendorForm
     
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
@@ -460,20 +466,114 @@ class signup(View):
    
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+        vendor_Form = self.form_class_vendor(initial=self.initial)
+        return render(request, self.template_name, {'form': form, 'vendor_Form' : vendor_Form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-
-        if form.is_valid():
-            form.save()
+        vendor_Form = self.form_class_vendor(request.POST)
+        print(vendor_Form.errors, form.errors)
+        if form.is_valid() and vendor_Form.is_valid():            
+            vendor_name = vendor_Form.cleaned_data.get('vendor_name')
+            vendor_email = vendor_Form.cleaned_data.get('vendor_email')
+            vendor_tg = vendor_Form.cleaned_data.get('vendor_tg')
+            vendor_insta = vendor_Form.cleaned_data.get('vendor_insta')
+            vendor_phone_number = vendor_Form.cleaned_data.get('vendor_phone_number')
+            store_name = vendor_Form.cleaned_data.get('store_name')
+            store_type = vendor_Form.cleaned_data.get('store_type')
+            store_website = vendor_Form.cleaned_data.get('store_website')
+            date_registered = vendor_Form.cleaned_data.get('date_registered')
             username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')  
+            store_address = vendor_Form.cleaned_data.get('store_address')   
+
+            print('Username : ', username, 'Password : ', password)
+            form.save()
+            Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number,
+                                    store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, 
+                                    username=username, password=password)
             messages.success(request, f'{username} uchun Akkount yaratildi')
             return redirect(to='login')
+        else:
+            print('forms are not valid')
+        return render(request, self.template_name, {'form' : form}) #'vendor_Form' : vendor_Form})
 
-        return render(request, self.template_name, {'form' : form})
+
+
+
 
 class changepassword(SuccessMessageMixin, PasswordChangeView):
     template_name = 'mnotes/change_password.html'
     sucess_message = "Parolni muvaffaqiyatli o'zgartirdingiz"
     success_url = reverse_lazy('index')
+
+
+@login_required
+def soldproducts(request):
+    soldproducts_list = ProductSold.objects.filter(username=request.user)
+
+
+    context = {'soldproducts_list' : soldproducts_list}
+    return render(request, 'mnotes/soldproducts.html', context)
+
+@login_required
+def soldproductview(request, id):
+    soldproduct_props = ProductSold.objects.get(pk=id, username=request.user)
+    context = {'soldproduct_props' : soldproduct_props }
+    return render(request, 'mnotes/soldproductview.html', context)
+
+
+@login_required
+def analytics(request):
+    product_list = Product.objects.filter(user=request.user)
+    full_product_initial_price = 0
+
+
+    #All product count
+    labels = []
+    data = []
+    full_product_count = 0
+    queryset = product_list
+    for count in queryset:
+        full_product_count += count.product_count
+        labels.append(count.product_name)
+        data.append(full_product_count)
+
+    #ProductSold Chart
+
+    labels3 = []
+    data3 = []
+    product_sold_budget = 0
+    queryset3 = ProductSold.objects.filter(username=request.user)
+    for count in queryset3:
+        product_sold_budget += count.product_sold_price * count.product_sold_count
+        date = count.date_sold.strftime('%m/%d/%Y')
+        labels3.append(date)
+        data3.append(product_sold_budget)
+
+
+    #All product budget
+    labels2 = []
+    data2 = []
+    full_product_initial_price = 0
+    queryset2 = product_list
+    for count in queryset2:
+        full_product_initial_price += count.product_price_initial * count.product_count
+        date = count.datetime.strftime('%m/%d/%Y')
+        labels2.append(date)
+        data2.append(full_product_initial_price)
+
+
+    #Pure profit
+    pure_profit = 0
+    product_profits = ProductSold.objects.filter(username=request.user)
+    for pr in product_profits:
+        pure_profit += pr.profit
+    
+    monthly_profit_aim = Vendor.objects.get(username=request.user).monthly_profit_aim
+    percent_done = (pure_profit * 100) / monthly_profit_aim
+    context = {'percent_done': percent_done,'monthly_profit_aim' : monthly_profit_aim, 'pure_profit':pure_profit, 'labels3' : labels3, 'data3' : data3, 'labels': labels, 'data': data, 'labels2' : labels2, 'data2' : data2}
+    return render(request, 'mnotes/analytics.html', context)
+
+
+ 

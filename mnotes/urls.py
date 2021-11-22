@@ -20,7 +20,7 @@ urlpatterns = [
     path('login/', login.as_view(redirect_authenticated_user=True, template_name='mnotes/login.html',
                                            authentication_form=LoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='mnotes/logout.html'), name='logout'),
-   	path('profile/', profile, name='profile'),
+   	path('profile', profile, name='profile'),
    	path('password-change/', changepassword.as_view(), name='password_change'),
    	path('productview/<int:id>', views.productview, name='productview'),
 	path('editproduct/<int:id>', views.editproduct, name='editproduct'),
@@ -43,6 +43,9 @@ urlpatterns = [
 	path('searchsoldproduct', views.searchsoldproduct, name='searchsoldproduct'),
 	path('searchbuydebtselect', views.searchbuydebtselect, name='searchbuydebtselect'),
 	path('searchselldebtselect', views.searchselldebtselect, name='searchselldebtselect'),
+	path('soldproducts', views.soldproducts, name='soldproducts'),
+	path('soldproductview/<int:id>', views.soldproductview, name='soldproductview'),
+	path('analytics', views.analytics, name='analytics'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

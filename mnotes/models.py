@@ -101,9 +101,15 @@ class ProductSold(models.Model):
     product_sold_price = models.IntegerField(default=0)
     product_sold_count = models.IntegerField(default=0)
     product_sold_id = models.IntegerField(default=0)
+    product_name = models.CharField(max_length=200, default='')
     profit = models.IntegerField(default=0)
     isdebt = models.BooleanField(default=False)
-
+    isfullypaid = models.BooleanField(default=True)
+    ispartlypaid = models.BooleanField(default=False)
+    paid_amount = models.IntegerField(default=0)
+    left_amount = models.IntegerField(default=0)
+    username = models.CharField(max_length=200, default='')
+    date_sold = models.DateField(auto_now_add=True, editable=False)
 
     def save(self, *args, **kwargs):
         super().save()
@@ -116,7 +122,7 @@ class SellOnDebt(models.Model):
     customer_name = models.CharField(max_length=200)
     given_date = models.DateField(auto_now_add=True, editable=False)
     due_date = models.DateField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=200, default='')
     isfullypaid = models.BooleanField(default=True)
     ispartlypaid = models.BooleanField(default=False)
     paid_amount = models.IntegerField(default=0)
@@ -133,7 +139,7 @@ class BuyOnDebt(models.Model):
     owner_phone = models.IntegerField(default=0)
     date_bought = models.DateField(auto_now_add=True, editable=False)
     due_date = models.DateField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=200, default='')
     isfullypaid = models.BooleanField(default=False)
     ispartlypaid = models.BooleanField(default=False)
     paid_amount = models.IntegerField(default=0)
@@ -141,3 +147,30 @@ class BuyOnDebt(models.Model):
 
     def save(self, *args, **kwargs):
         super().save()
+
+class Vendor(models.Model):
+    STORES = [
+        ('Kiyimlar', 'Kiyimlar'),
+        ('Oyoq kiyim', 'Oyoq kiyim'),
+        ('Oziq ovqat', 'Oziq ovqat'),
+        ('Mebel', 'Mebel'),
+        ('Zargarlik', 'Zargarlik'),
+        ('Kosmetika', 'Kosmetika'),
+        ('Kanseleriya buyumlari', 'Kanseleriya buyumlari'),
+        ('Ichki kiyimlar', 'Ichki kiyimlar'),
+        ('Boshqa', 'Boshqa'),
+    ]
+
+    vendor_name = models.CharField(max_length=200)
+    vendor_email = models.CharField(max_length=200)
+    vendor_tg = models.CharField(max_length=200)
+    vendor_insta = models.CharField(max_length=200, default='')
+    vendor_phone_number = models.IntegerField(default=0)
+    store_name = models.CharField(max_length=200)
+    store_type = models.CharField(max_length=30, choices=STORES, blank=True, null=True)
+    store_website = models.CharField(max_length=200)
+    store_address = models.CharField(max_length=200, default='')
+    monthly_profit_aim = models.IntegerField(default=0)
+    date_registered = models.DateField(auto_now_add=True, editable=False)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
