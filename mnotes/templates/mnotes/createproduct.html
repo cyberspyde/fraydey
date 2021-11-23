@@ -1,0 +1,189 @@
+{% extends 'mnotes/index.html' %}
+{% block title %} Yangi tovar qo'shish {% endblock title %}
+{% block content %}
+ 
+{% if form.errors %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <div id="form_errors" class="text-center">
+        {% for key, value in form.errors.items %}
+            <strong>{{ value }}</strong>
+        {% endfor %}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+<!--
+ Muhim error handler
+{% if form.errors %}
+      {% for field in form %}
+
+           {% for error in field.errors %}
+                {{field.label}}: {{ error|escape }}
+           {% endfor %}
+
+      {% endfor %}
+{% endif %}
+-->
+
+<style type="">
+    input[type='file'] {
+       color: transparent;
+    }
+</style>
+  <div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+    <div class="container-contact3">
+      <div class="wrap-contact3">
+        <form class="contact3-form validate-form" action="" method="POST" enctype="multipart/form-data">
+          <span class="contact3-form-title pb-4">
+            Mahsulot formasi
+          </span>
+          {% csrf_token %}
+          <div class="wrap-contact3-form-radio pb-0">
+            
+            <!--
+            <div class="contact3-form-radio m-r-42">
+              <input class="input-radio3" id="radio1" type="radio" name="choice" value="say-hi" checked="checked">
+              <label class="label-radio3" for="radio1">
+                Yangi mahsulot qo'shish (rasmsiz)
+              </label>
+            </div>
+
+            <div class="contact3-form-radio">
+              <input class="input-radio3" id="radio2" type="radio" name="choice" value="get-quote">
+              <label class="label-radio3" for="radio2">
+                Yangi mahsulot rasm bilan
+              </label>
+            </div>
+            -->
+
+            <div class="form-check form-switch text-center text-light text-uppercase mt-2 w-100">
+              <input class="form-check-input" type="checkbox" id="isdebt" name="isdebt" value="isdebt">
+              <label class="form-check-label" for="isdebt">Qarzga oldim &</label>
+            </div>
+          </div>        
+          <div class="wrap-input3 mb-0">
+            <label for="product_name"></label>
+            <input class="input3" type="text" name="product_name" id="product_name" placeholder="Mahsulot nomi">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3 mb-0">
+            <label for="product_price_initial"></label>
+            <input class="input3" type="number" name="product_price_initial" id="product_price_initial" placeholder="Mahsulot tan narxi">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3 mb-0">
+            <label for="product_price_told"></label>
+            <input class="input3" type="number" name="product_price_told" id="product_price_told" placeholder="Mahsulot aytilish narxi">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3 mb-0">
+            <label for="product_count"></label>
+            <input class="input3" type="number" name="product_count" id="product_count" placeholder="Mahsulot soni">
+            <span class="focus-input3"></span>
+          </div>
+
+          <!-- Debt form additional -->
+          <div class="wrap-input3 input3-debt mb-0">
+            <label for="owner_name"></label>
+            <input class="input3" type="text" name="owner_name" id="owner_name" placeholder="Sotuvchi ismi">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3 input3-debt mb-0">
+            <label for="owner_phone"></label>
+            <input class="input3" type="number" name="owner_phone" id="owner_phone" placeholder="Sotuvchi telefon raqami">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3 input3-debt text-center text-light mt-2">
+            <label for="due_date"> Qarzni to'lash kunini tanlang</label>
+            <input class="input3 mt-0" type="date" name="due_date" id="due_date" placeholder="Qarzni qaytarish vaqti">
+            <span class="focus-input3"></span>
+          </div>
+
+          <div class="form-check form-switch text-center text-light text-uppercase mt-2 w-100 input3-debt">
+              <input class="form-check-input" type="checkbox" id="ispartlypaid" name="ispartlypaid" value="ispartlypaid">
+              <label class="form-check-label" for="ispartlypaid">Bo'lib to'landi</label>           
+            </div> 
+
+          <div class="wrap-input3 input3-debt-part text-center text-light mt-2">
+            <p class="text-light"> Umumiy to'langan summani kiriting </p>
+            <label for="paid_amount"></label>
+            <input class="input3 mt-0" type="number" name="paid_amount" id="paid_amount" placeholder="To'langan summa">
+            <span class="focus-input3"></span>          
+
+          </div>
+          <!-- Debt form additional -->
+            <div class="form-group"> 
+              <div class="form-check form-switch text-center text-light text-uppercase mt-4">
+                <input class="form-check-input" type="checkbox" id="hassize">
+                <label class="form-check-label" for="hassize">Razmerlari mavjudmi?</label>
+              </div>
+              
+                <div class="row row-cols-3 input3-size">
+              <h4 class="w-100 text-center mb-2 text-light"></h4>
+              {% for value, text in form.product_size.field.choices %}
+                <div class="ui slider checkbox form-check text-center">
+                  <input class="form-check-input" id="id_providers_{{ forloop.counter0 }}" name="{{ form.product_size.name }}" type="checkbox" value="{{ value }}"{% if value in checked_providers %} checked="checked"{% endif %}>
+                <label style="color: white;">{{ text }}</label>
+                </div>
+              {% endfor %}
+              </div>
+              <hr>            
+              <div class="form-check form-switch text-center text-light text-uppercase">
+                <input class="form-check-input" type="checkbox" id="hascolor">
+                <label class="form-check-label" for="hascolor">Ranglari mavjudmi?</label>
+              </div>
+              
+              <div class="row row-cols-3 input3-color">   
+              <h4 class="w-100 text-center mb-2 text-light"></h4>   
+              {% for value, text in form.product_color.field.choices %}
+                <div class="ui slider checkbox form-check text-center">
+                  <input class="form-check-input" id="id_providers_{{ forloop.counter0 }}" name="{{ form.product_color.name }}" type="checkbox" value="{{ value }}"{% if value in checked_providers %} checked="checked"{% endif %}>
+                <label style="color: white;">{{ text }}</label>
+                </div>
+              {% endfor %}
+              </div>
+              <hr>
+
+              <div class="form-check form-switch text-center text-light text-uppercase">
+                <input class="form-check-input" type="checkbox" id="hasseason">
+                <label class="form-check-label" for="hasseason">Sezonlari mavjudmi?</label>
+              </div>
+              
+              <div class="row row-cols-3 input3-season">
+              <h4 class="w-100 text-center mb-2 text-light"></h4>
+              {% for value, text in form.product_season.field.choices %}
+                <div class="ui slider checkbox form-check text-center">
+                  <input class="form-check-input" id="id_providers_{{ forloop.counter0 }}" name="{{ form.product_season.name }}" type="checkbox" value="{{ value }}"{% if value in checked_providers %} checked="checked"{% endif %}>
+                <label style="color: white;">{{ text }}</label>
+                </div>
+              {% endfor %}
+              </div>
+
+              <hr>
+              <div class="form-check form-switch text-center text-light text-uppercase mt-4">
+                <input class="form-check-input" type="checkbox" id="hasphoto">
+                <label class="form-check-label" for="hasphoto">Rasm mavjudmi?</label>
+              </div>
+            <div class="row row-cols-2 input3-photo" style="color: white;">
+               Rasmni yuklang : {{form.product_img}}
+            </div>
+            </div>      
+
+     
+          <div class="container-contact3-form-btn">
+            <button type="submit" class="contact3-form-btn">
+              Saqlash
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="dropDownSelect1"></div>
+
+{% endblock content %}

@@ -1,0 +1,48 @@
+{% extends 'mnotes/index.html' %}
+
+{% block title %} Qarzga mahsulot berish {% endblock title %}
+
+{% block content %}
+
+  <div class="bg-contact3">
+    <div class="container-contact3">
+      <div class="wrap-contact3" style="background: royalblue;">
+        <form class="contact3-form" action="" method="POST">
+            <h4 style="color: black;" class="text-center text-uppercase text-light">Qarzga berilgan mahsulot : <i class="text-success"> <b> {{product.product_name}} </b></i></h4>
+
+          {% csrf_token %}
+          <div class="wrap-input3">
+          	<div class="wrap-input3">
+            <label for="product_price"></label>
+            <input class="input3" type="number" name="product_price" id="product_price" placeholder="Qanchaga berdingiz">
+            <span class="focus-input3"></span>
+          </div>
+            <label for="product_count"></label>
+            <input class="input3" type="number" name="product_count" id="product_count" placeholder="Nechta berdingiz?">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3">
+            <label for="customer_name"></label>
+            <input class="input3" type="text" name="customer_name" id="customer_name" placeholder="Qarzdorning ismi">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3">
+            <label for="customer_phone"></label>
+            <input class="input3" type="number" name="customer_phone" id="customer_phone" placeholder="Qarzdor telefon raqami">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="wrap-input3">
+            <label for="due_date"></label>
+            <input class="input3" type="date" name="due_date" id="due_date" placeholder="Qarz muddati">
+            <span class="focus-input3"></span>
+          </div>
+          <div class="container-contact3-form-btn">
+            <button type="submit" class="contact3-form-btn">
+              Saqlash
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

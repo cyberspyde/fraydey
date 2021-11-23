@@ -1,0 +1,61 @@
+{% extends 'mnotes/index.html' %}
+{% load static %}
+{% block title %} Qarzga mahsulot olish {% endblock title %}
+
+ 
+{% block content %}
+
+{% if searched %}
+
+{% if selldebt %}
+
+<form class="text-center mx-auto w-75 d-flex" action="{% url 'searchselldebtselect' %}" method="POST"> 
+            {% csrf_token %}
+            <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searched"> 
+            <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
+</form> 
+<br>
+<h5 class="text-center text-uppercase">Qarzga berilgan mahsulotni tanlang</h5>
+<hr>
+<div class="container">
+				<div class="row row-cols-2 d-flex justify-content-center text-center">
+					{% for product in selldebt %}
+						<!-- Single Product -->
+						<div class="">
+								<div id="product-1" class="single-product" style="">
+									<a href="{% url 'givedebt' product.id %}">
+									{% if product.product_img %}						    
+									    <div class="part-1 border" style="background:  url('{{ product.product_img.url }}') no-repeat center; background-size: 100% auto;">
+									{% else %}
+
+										<div role="img" class="part-1 text-center my-auto row border"><span class="text-uppercase text-danger text-center align-self-center"> Rasm mavjud emas </span>
+									{% endif %}
+										
+										</div>
+										<div class="part-2" >
+												<h3 class="product-title"><a href="{% url 'givedebt' product.id %}"><b class="text-uppercase text-dark"> {{product.product_name}} </b> </a></h3>
+												<h5 class="product-price">$49.99</h5>
+										</div>
+										</div>
+										</a>
+										</div>
+					{% endfor %}
+				</div>
+				</div>
+</div>
+
+	{% else %}
+	<form class="text-center mx-auto w-75 d-flex" action="{% url 'searchsoldproduct' %}" method="POST"> 
+            {% csrf_token %}
+            <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searched"> 
+            <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
+</form> 
+	<hr>
+	<h5 class="text-center">Siz qidirgan mahsulot mavjud emas</h5>
+	{% endif %}
+
+{% else %}
+<hr>
+<h5 class="text-center">Mahsulotni qidirishni unutdingiz!</h5>
+{% endif %}
+{% endblock %}

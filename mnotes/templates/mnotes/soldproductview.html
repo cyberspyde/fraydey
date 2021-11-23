@@ -1,0 +1,79 @@
+{% extends 'mnotes/index.html' %}
+
+{% block title %} Mahsulot sahifa {% endblock title %}
+
+{% block content %}
+
+<!-- Classic tabs -->
+<div class="classic-tabs border rounded px-4 ">
+
+  <div class="tab-content" id="advancedTabContent">
+    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+<!-- DESCRIPTION PAGE -->
+<div class="container-fluid mt-5 w-100">
+			<h3 class="text-center text-uppercase font-weight-bold w-100">Sotilgan mahsulot haqida to'liq ma'lumot</h3>
+
+			<hr>
+			{% if soldproduct_props.isfullypaid %}
+
+            <h5 class="text-success text-center">Puli to'langan</h5>            
+
+            {% elif soldproduct_props.ispartlypaid%}
+
+            <h5 class="text-warning text-center">Qarzni ma'lum qismi to'langan</h5> 
+			<div><span class="font-weight-bold">To'langan pul :</span><span class="ml-2">{{soldproduct_props.paid_amount}}</span></div>
+			<div><span class="font-weight-bold">Qolgan pul :</span><span class="ml-2">{{soldproduct_props.left_amount}}</span></div>
+            {% elif soldproduct_props.isdebt %}
+
+            <h5 class="text-danger text-center">Puli to'lanmagan</h5> 
+
+            {% endif %}
+
+            {% if soldproduct_props %}
+            <div><span class="font-weight-bold">Mahsulot nomi:</span><span class="ml-2">{{soldproduct_props.product_name}} </span></div>
+            <div><span class="font-weight-bold">Sotilgan mahsulot soni:</span><span class="ml-2">{{soldproduct_props.product_sold_count}}</span></div>
+            <div><span class="font-weight-bold">Sotilgan mahsulot narxi:</span><span class="ml-2">{{soldproduct_props.product_sold_price}} Sum</span></div>
+            <div><span class="font-weight-bold">Sotilgan kuni :</span><span class="ml-2">{{soldproduct_props.date_sold}}</span></div>
+            <div><span class="font-weight-bold">Shu savdodan qilingan foyda :</span><span class="ml-2">{{soldproduct_props.profit}}</span></div>
+
+            {% else %}
+
+              {% if soldondebtproduct_props.isfullypaid %}
+
+              <h5 class="text-success text-center">Puli to'langan</h5>            
+
+              {% elif soldondebtproduct_props.ispartlypaid%}
+
+              <h5 class="text-warning text-center">Qarzni ma'lum qismi to'langan</h5> 
+              <div><span class="font-weight-bold">To'langan pul :</span><span class="ml-2">{{soldondebtproduct_props.paid_amount}}</span></div>
+              <div><span class="font-weight-bold">Qolgan pul :</span><span class="ml-2">{{soldondebtproduct_props.left_amount}}</span></div>
+              {% else %}
+
+              <h5 class="text-danger text-center">Puli to'lanmagan</h5> 
+
+              {% endif%}
+            <div><span class="font-weight-bold">Mahsulot nomi:</span><span class="ml-2">{{soldondebtproduct_props.product_name}} </span></div>
+            <div><span class="font-weight-bold">Sotilgan mahsulot soni:</span><span class="ml-2">{{soldondebtproduct_props.product_count}}</span></div>
+            <div><span class="font-weight-bold">Sotilgan mahsulot narxi:</span><span class="ml-2">{{soldondebtproduct_props.product_price}} Sum</span></div>
+            <div><span class="font-weight-bold">Sotilgan kuni :</span><span class="ml-2">{{soldondebtproduct_props.given_date}}</span></div>
+            <div><span class="font-weight-bold">Shu savdodan qilingan foyda :</span><span class="ml-2">{{soldondebtproduct_props.profit}}</span></div>
+            {% endif %}
+            <div class="mt-3 row  ">
+            	<a href="{% url 'soldproducts' %}" class="btn btn-success mr-2 mb-5"> Ortga qaytish</a>
+
+            </div>
+
+
+            
+</div>
+<!-- DESCRIPTION PAGE -->
+    
+    </div>
+  </div>
+
+</div>
+<!-- Classic tabs -->
+
+
+<script src="/static/js/main.js"></script>
+{% endblock %}

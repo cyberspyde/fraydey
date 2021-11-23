@@ -1,0 +1,14 @@
+{% extends "mnotes/index.html" %}
+{% block title %}Akkountdan chiqish{% endblock title %}
+{% block content %}
+    <div class="card w-100 text-center" style="width: 18rem;">
+        <div class="card-body">
+        <h5 class="card-title">Akkountingizdan chiqib ketdingiz</h5>
+        <p class="card-text">
+            Xizmatimizdan foydalanganingiz uchun rahmat!
+        </p>
+        <br><hr><a href="{% url 'login' %}" class="btn btn-primary">Qayta akkountga kirish</a>
+        </div>
+    </div>
+
+{% endblock content %}
