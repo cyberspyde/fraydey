@@ -98,8 +98,6 @@ def createproduct(request):
 
             messages.success(request, 'Mahsulot muvaffaqiyatli yaratildi')
             return redirect('/inventory/')
-        else:
-            print ("Form is not valid")
     else:
         form = ProductForm()
         BuyDebtForm = BuyOnDebtForm()
@@ -208,7 +206,7 @@ def productsold(request, id):
     if request.method == 'POST':
         SoldProductForm = ProductSoldForm(request.POST)
         SellDebtForm = SellOnDebtForm(request.POST)
-        print(SoldProductForm.errors, SellDebtForm.errors)
+
         if SoldProductForm.is_valid() and SellDebtForm.is_valid():
 
             sold_price = SoldProductForm.cleaned_data.get('product_sold_price')
@@ -321,7 +319,7 @@ def givedebt(request, id):
     product = Product.objects.get(pk=id)
     if request.method == 'POST':
         form = SellOnDebtForm(request.POST)
-        print(form.errors)
+
         if form.is_valid():
             product_name = product.product_name
             product_count = form.cleaned_data.get('product_count')
@@ -401,7 +399,6 @@ def paydebt(request, id):
         redirect('debts')
     else:
         redirect('debts')
-        print('errors')
     return redirect('debts')
 
 def getdebt(request, id):
@@ -463,15 +460,12 @@ def editprofile(request, username):
         vendor_Form = VendorForm(request.POST, instance=user)
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        print(vendor_Form.errors)
         if user_form.is_valid() and profile_form.is_valid() and vendor_Form.is_valid():
             user_form.save()
             profile_form.save()
             vendor_Form.save()
             messages.success(request, 'Akkountingiz muvaffaqiyatli yangilandi')
             return redirect('profile')
-        else:
-            print('Forms are not valid')    #return render(request, 'mnotes/profile.html', {'user_form' : user_form, 'profile_form' : profile_form, 'img_obj': img_obj})
     else:
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
@@ -537,7 +531,6 @@ class signup(View):
             password = form.cleaned_data.get('password1')  
             store_address = vendor_Form.cleaned_data.get('store_address')   
 
-            print('Username : ', username, 'Password : ', password)
             form.save()
             Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number,
                                     store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, 
@@ -638,7 +631,6 @@ def analytics(request):
 
         
     
-    print(labels2[-1])
     context = {'full_budget_product_sold': full_budget_product_sold, 'full_profit_day': full_profit_day, 'pure_profit':pure_profit, 'labels3' : labels3, 'data3' : data3, 'labels': labels, 'data': data, 'labels2' : labels2, 'data2' : data2}
     return render(request, 'mnotes/analytics.html', context)
 
