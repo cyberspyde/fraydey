@@ -117,6 +117,17 @@ class ProductSoldForm(forms.ModelForm):
             'isdebt' : _('isdebt'),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ProductSoldForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['product_sold_count'].error_messages.update({
+            'required': 'Mahsulotni sonini kiritmadingiz!',
+        })
+        self.fields['product_sold_price'].error_messages.update({
+            'required': 'Mahsulotni sotilgan narxini kiritmadingiz!',
+        })
+ 
 
 class SellOnDebtForm(forms.ModelForm):
     due_date = forms.DateField(required=False)
@@ -154,17 +165,37 @@ class SellOnDebtForm(forms.ModelForm):
 
         }
 
+    def __init__(self, *args, **kwargs):
+        super(SellOnDebtForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['due_date'].error_messages.update({
+            'required': 'Mahsulotni qaytarish kunini kiritmadingiz!',
+        })
+        self.fields['product_count'].error_messages.update({
+            'required': 'Mahsulotni sonini kiritmadingiz!',
+        })
+        self.fields['product_price'].error_messages.update({
+            'required': 'Mahsulotni narxini kiritmadingiz!',
+        })
+        self.fields['customer_name'].error_messages.update({
+            'required': 'Qarzdor ismini kiritmadingiz!',
+        })
+        self.fields['customer_phone'].error_messages.update({
+            'required': 'Qarzdor telefon raqamini kiritmadingiz!',
+        })
+
 class BuyOnDebtForm(forms.ModelForm):
-    due_date = forms.DateField(required=False)
+    due_date = forms.DateField()
     product_name = forms.CharField(max_length=200, required=False)
-    product_count = forms.IntegerField(required=False)
-    product_price = forms.IntegerField(required=False)
+    product_count = forms.IntegerField()
+    product_price = forms.IntegerField()
     isfullypaid = forms.BooleanField(required=False)
     ispartlypaid = forms.BooleanField(required=False)
     paid_amount = forms.IntegerField(required=False)
     left_amount = forms.IntegerField(required=False)
-    owner_name = forms.CharField(required=False)
-    owner_phone = forms.IntegerField(required=False)
+    owner_name = forms.CharField()
+    owner_phone = forms.IntegerField()
     class Meta:
         model = BuyOnDebt
         fields = ['owner_name', 'owner_phone', 'due_date']
@@ -188,6 +219,26 @@ class BuyOnDebtForm(forms.ModelForm):
             'paid_amount' : _('paid_amount'),
             'left_amount' : _('left_amount'),
         }
+    def __init__(self, *args, **kwargs):
+        super(BuyOnDebtForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['due_date'].error_messages.update({
+            'required': 'Mahsulotni qaytarish kunini kiritmadingiz!',
+        })
+        self.fields['product_count'].error_messages.update({
+            'required': 'Mahsulotni sonini kiritmadingiz!',
+        })
+        self.fields['product_price'].error_messages.update({
+            'required': 'Mahsulotni narxini kiritmadingiz!',
+        })
+        self.fields['owner_name'].error_messages.update({
+            'required': 'Sotuvchi ismini kiritmadingiz!',
+        })
+        self.fields['owner_phone'].error_messages.update({
+            'required': 'Sotuvchi telefon raqamini kiritmadingiz!',
+        })
+
 
 
 class VendorForm(forms.ModelForm):

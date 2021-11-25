@@ -61,7 +61,6 @@ def createproduct(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         BuyDebtForm = BuyOnDebtForm(request.POST)
-        print(form.errors, BuyDebtForm.errors)
         if form.is_valid() and BuyDebtForm.is_valid():
             product_name = form.cleaned_data.get('product_name')
             product_price_initial = form.cleaned_data.get('product_price_initial')
@@ -254,10 +253,8 @@ def productsold(request, id):
                         product_count=sold_count, customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, isfullypaid=isfullypaid, 
                         ispartlypaid=ispartlypaid, paid_amount=paid_amount, left_amount=left_amount, profit=profit)
                 
-
                 messages.success(request, 'Sotilgan mahsulot muvaffaqiyatli saqlandi.')
-                redirect('inventory')
-
+                return redirect('inventory')
         else:
             
             profit = 0
@@ -330,9 +327,6 @@ def givedebt(request, id):
             paid_amount = form.cleaned_data.get('paid_amount')
 
 
-
-
-
             if(paid_amount is None):
                 paid_amount = 0
                 left_amount = 0
@@ -363,7 +357,7 @@ def givedebt(request, id):
                                         customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, paid_amount=paid_amount, 
                                         left_amount=left_amount, ispartlypaid=ispartlypaid, isfullypaid=isfullypaid, profit=profit)
             messages.success(request, 'Qarzga berilgan mahsulot muvaffaqiyatli saqlandi.')
-            redirect('debts')
+            return redirect('debts')
     else:
 
         form = SellOnDebtForm()
@@ -532,9 +526,7 @@ class signup(View):
             store_address = vendor_Form.cleaned_data.get('store_address')   
 
             form.save()
-            Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number,
-                                    store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, 
-                                    username=username, password=password)
+            Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number, store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, username=username, password=password)
             messages.success(request, f'{username} uchun Akkount yaratildi')
             return redirect(to='login')
             
@@ -554,6 +546,7 @@ class changepassword(SuccessMessageMixin, PasswordChangeView):
 def soldproducts(request):
     soldproducts_list = ProductSold.objects.filter(username=request.user)
     soldondebtproducts_list = SellOnDebt.objects.filter(username=request.user)
+
 
     context = {'soldproducts_list' : soldproducts_list, 'soldondebtproducts_list' : soldondebtproducts_list}
     return render(request, 'mnotes/soldproducts.html', context)
@@ -587,7 +580,7 @@ def analytics(request):
     full_product_count = 0
     queryset = product_list
     for count in queryset:
-        full_product_count += count.product_count
+        full_product_count = count.product_count
         labels.append(count.product_name)
         data.append(full_product_count)
 

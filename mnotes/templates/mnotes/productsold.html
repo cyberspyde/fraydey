@@ -3,6 +3,7 @@
 {% block title %} Mahsulotni yangilash {% endblock title %}
 
 {% block content %}
+<!-- Nice errors 
 {% if SoldProductForm.errors %}
       {% for field in SoldProductForm %}
 
@@ -11,6 +12,20 @@
            {% endfor %}
 
       {% endfor %}
+{% endif %}
+-->
+
+{% if SoldProductForm.errors %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <div id="form_errors" class="text-center">
+        {% for key, value in SoldProductForm.errors.items %}
+            <strong>{{ value }}</strong>
+        {% endfor %}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 {% endif %}
 
 
