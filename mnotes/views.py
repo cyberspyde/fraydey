@@ -61,6 +61,7 @@ def createproduct(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         BuyDebtForm = BuyOnDebtForm(request.POST)
+        
         if form.is_valid() and BuyDebtForm.is_valid():
             product_name = form.cleaned_data.get('product_name')
             product_price_initial = form.cleaned_data.get('product_price_initial')

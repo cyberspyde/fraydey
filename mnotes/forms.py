@@ -186,16 +186,16 @@ class SellOnDebtForm(forms.ModelForm):
         })
 
 class BuyOnDebtForm(forms.ModelForm):
-    due_date = forms.DateField()
+    due_date = forms.DateField(required=False)
     product_name = forms.CharField(max_length=200, required=False)
-    product_count = forms.IntegerField()
-    product_price = forms.IntegerField()
+    product_count = forms.IntegerField(required=False)
+    product_price = forms.IntegerField(required=False)
     isfullypaid = forms.BooleanField(required=False)
     ispartlypaid = forms.BooleanField(required=False)
     paid_amount = forms.IntegerField(required=False)
     left_amount = forms.IntegerField(required=False)
-    owner_name = forms.CharField()
-    owner_phone = forms.IntegerField()
+    owner_name = forms.CharField(required=False)
+    owner_phone = forms.IntegerField(required=False)
     class Meta:
         model = BuyOnDebt
         fields = ['owner_name', 'owner_phone', 'due_date']
