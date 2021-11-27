@@ -4,9 +4,6 @@
 
 {% block content %}
 <!-- Classic tabs -->
-<div class="classic-tabs border rounded pt-1">
-  <div class="tab-content" id="advancedTabContent">
-    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
 <br>
 <form class="text-center mx-auto w-75 d-flex" action="{% url 'searchsoldproduct' %}" method="POST"> 
       {% csrf_token %}
@@ -62,10 +59,6 @@
 {% endfor %}
 
 </table>   
-
-</div>
-  </div>
-</div>
 
 <script src="/static/js/main.js"></script>
 

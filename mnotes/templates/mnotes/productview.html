@@ -63,7 +63,11 @@
             {% else %}
             <div><span class="font-weight-bold">Sezoni:</span><span class="ml-2 text-danger">Mavjud emas</span></div>
             {% endif %}
-            <div class="mt-3 row  "><a href="{% url 'editproduct' prop.id %}" class="btn btn-primary mb-2"> Mahsulotni yangilash</a><a href="{% url 'deleteproduct' prop.id %}" class="btn btn-danger mb-2"> Mahsulotni o'chirish </a><a href="{% url 'inventory' %}" class="btn btn-success mr-2 mb-5"> Ortga qaytish</a></div>
+            <div class="mt-3 row  "><a href="{% url 'editproduct' prop.id %}" class="btn btn-primary mb-2"> Mahsulotni yangilash</a>
+              <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#exampleModalCenter">
+              Mahsulotni o'chirish
+            </button>
+              <a href="{% url 'inventory' %}" class="btn btn-success mr-2 mb-5"> Ortga qaytish</a></div>
             
         </div>
     </div>
@@ -190,7 +194,37 @@
   </div>
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!--
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Mahsulot o'chirish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    -->
+      <div class="modal-body">
+        <h4>Mahsulotni o'chirmoqchimisiz?</h4>
+        <p class="text-danger"> PS: Mahsulotni boshqa tiklab bo'lmaydi! <br> Mahsulot o'chirilgandan so'ng, u haqidagi barcha ma'lumotlar o'chiriladi, boshqa bo'limlarga ham ta'sirini e'tiborga oling.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+        <a href="{% url 'deleteproduct' prop.id %}" class="btn btn-danger mb-2"> Mahsulotni o'chirish </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
 {% endfor %}
+
+
+
+
+
 
 <script src="/static/js/main.js"></script>
 {% endblock %}

@@ -134,13 +134,25 @@ def searchfunction(request):
 
 def searchsoldproduct(request):
     if request.method == 'POST':
-        searched = request.POST['searched']
-        products = Product.objects.filter(product_name__contains=searched, username=request.user)
+        searched = request.POST['searchedsoldproduct']
+        products = ProductSold.objects.filter(product_name__contains=searched, username=request.user)
+        debtproducts = SellOnDebt.objects.filter(product_name__contains=searched, username=request.user)
+    else:
+        searched = ""
+        products = ""
+        debtproducts = ""
+    context = { 'searched' : searched, 'products' : products, 'debtproducts' : debtproducts}
+    return render(request, 'mnotes/searchsoldproduct.html', context)
+
+def searchsoldproductone(request):
+    if request.method == 'POST':
+        searched = request.POST['searchedsoldproductone']
+        products = Product.objects.filter(product_name__contains=searched, user=request.user)
     else:
         searched = ""
         products = ""
     context = { 'searched' : searched, 'products' : products}
-    return render(request, 'mnotes/searchsoldproduct.html', context)
+    return render(request, 'mnotes/searchsoldproductone.html', context)
 
 def searchbuydebt(request):
     if request.method == 'POST':

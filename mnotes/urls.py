@@ -41,6 +41,7 @@ urlpatterns = [
 	path('selldebtview/<int:id>', views.selldebtview, name='selldebtview'),
 	path('buydebtview/<int:id>', views.buydebtview, name='buydebtview'),
 	path('searchsoldproduct', views.searchsoldproduct, name='searchsoldproduct'),
+	path('searchsoldproductone', views.searchsoldproductone, name='searchsoldproductone'),
 	path('searchbuydebtselect', views.searchbuydebtselect, name='searchbuydebtselect'),
 	path('searchselldebtselect', views.searchselldebtselect, name='searchselldebtselect'),
 	path('soldproducts', views.soldproducts, name='soldproducts'),

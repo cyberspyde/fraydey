@@ -6,9 +6,9 @@
 {% block content %}
 
 
-<form class="text-center mx-auto w-75 d-flex" action="{% url 'searchsoldproduct' %}" method="POST"> 
+<form class="text-center mx-auto w-75 d-flex" action="{% url 'searchsoldproductone' %}" method="POST"> 
             {% csrf_token %}
-            <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searched"> 
+            <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searchedsoldproductone"> 
             <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
 </form> 
 <br>
