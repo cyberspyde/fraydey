@@ -13,11 +13,11 @@ class ProductAdmin(admin.ModelAdmin):
 	form = ProductForm
 
 class ProductSoldAdmin(admin.ModelAdmin):
-	list_display = ['product_sold_id', 'product_sold_price', 'product_sold_count', 'date_sold']
+	list_display = ['username', 'product_sold_price', 'date_sold', 'id']
 	form = ProductSoldForm
 
 class SellOnDebtAdmin(admin.ModelAdmin):
-	list_display = ['product_name', 'customer_name', 'due_date', 'given_date']
+	list_display = ['username', 'product_name', 'customer_name', 'id']
 
 class BuyOnDebtAdmin(admin.ModelAdmin):
 	list_display = ['id','product_name', 'owner_name', 'date_bought']

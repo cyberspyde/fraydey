@@ -258,14 +258,26 @@ def productsold(request, id):
                 profit = (sold_price - initial_price)*sold_count
 
                 
+                
+   
+                if(isdebt):                
+                    isfullypaid = False
 
-                ProductSold.objects.create(product_name=product_name, username=request.user, product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt)
+                    ProductSold.objects.create(product_name=product_name, username=request.user, product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
+                 
+                else:
+                    isfullypaid = True
+                    ispartlypaid = False
                     
+                    ProductSold.objects.create(product_name=product_name, username=request.user, product_sold_price=sold_price, product_sold_count=sold_count, product_sold_id=id, profit=profit, isdebt=isdebt) 
+                 
+                last_added = ProductSold.objects.latest('id')
+                
                 if(isdebt):
                     SellOnDebt.objects.create(username=request.user, product_name=product.product_name, product_price=product.product_price_initial, 
                         product_count=sold_count, customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, isfullypaid=isfullypaid, 
-                        ispartlypaid=ispartlypaid, paid_amount=paid_amount, left_amount=left_amount, profit=profit)
-                
+                        ispartlypaid=ispartlypaid, paid_amount=paid_amount, left_amount=left_amount, profit=profit, soldproductid=last_added.id)
+            
                 messages.success(request, 'Sotilgan mahsulot muvaffaqiyatli saqlandi.')
                 return redirect('inventory')
         else:
@@ -388,9 +400,13 @@ def givedebtselect(request):
 
 def returndebt(request, id):
     debt = SellOnDebt.objects.get(pk=id)
+    soldproduct = ProductSold.objects.get(pk=debt.soldproductid)
+
     if request.method == 'POST':
         debt.isfullypaid = True
+        soldproduct.isfullypaid = True
         debt.save()
+        soldproduct.save()
         redirect('debts')
     else:
         redirect('debts')
@@ -399,8 +415,10 @@ def returndebt(request, id):
 
 def paydebt(request, id):
     debt = BuyOnDebt.objects.get(pk=id)
+
     if request.method == 'POST':
         debt.isfullypaid = True
+
         debt.save()
         messages.success(request, 'Qarz muvaffaqiyatli to`landi')
         redirect('debts')
@@ -535,13 +553,19 @@ class signup(View):
             store_website = vendor_Form.cleaned_data.get('store_website')
             date_registered = vendor_Form.cleaned_data.get('date_registered')
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')  
+            password = form.cleaned_data.get('password1')
             store_address = vendor_Form.cleaned_data.get('store_address')   
 
-            form.save()
-            Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number, store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, username=username, password=password)
-            messages.success(request, f'{username} uchun Akkount yaratildi')
-            return redirect(to='login')
+
+
+            if(username.lower() == username):
+                form.save()
+                Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number, store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, username=username, password=password)
+                messages.success(request, f'{username} uchun Akkount yaratildi')
+                return redirect(to='login')
+            else:
+                messages.error(request, f'{username} uchun akkount yaratilmadi, nomni faqat kichkina xarflarda kiriting.')
+                return redirect(to='signup')
             
         return render(request, self.template_name, {'form' : form}) #'vendor_Form' : vendor_Form})
 
@@ -605,12 +629,13 @@ def analytics(request):
     full_budget_product_sold = 0
     queryset3 = ProductSold.objects.filter(username=request.user, date_sold=todays_date)
     for count in queryset3:
-        product_sold_budget += count.product_sold_price * count.product_sold_count
-        date = count.date_sold.strftime('%m/%d/%Y')
-        labels3.append(date)
-        data3.append(product_sold_budget)
+        if(count.isfullypaid):
+            product_sold_budget += count.product_sold_price * count.product_sold_count
+            date = count.date_sold.strftime('%m/%d/%Y')
+            labels3.append(date)
+            data3.append(product_sold_budget)
 
-        full_budget_product_sold = data3[-1]
+            full_budget_product_sold = data3[-1]
 
 
     #Daily profit
@@ -621,16 +646,17 @@ def analytics(request):
     full_profit_day = 0
     queryset2 = product_profits
     for pr in queryset2:
-        pure_profit += pr.profit
-        date = pr.date_sold.strftime('%m/%d/%Y')
-        labels2.append(date)
-        data2.append(pure_profit)        
-    
-        full_profit_day = data2[-1]
+        if(pr.isfullypaid):
+            pure_profit += pr.profit
+            date = pr.date_sold.strftime('%m/%d/%Y')
+            labels2.append(date)
+            data2.append(pure_profit)        
+        
+            full_profit_day = data2[-1]
 
-        if(len(labels2) == 10) and (len(data2) == 10):
-            labels2.shift(date)
-            data2.shift(pure_profit)
+            if(len(labels2) == 10) and (len(data2) == 10):
+                labels2.shift(date)
+                data2.shift(pure_profit)
 
 
 

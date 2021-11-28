@@ -8,6 +8,7 @@ from multiselectfield import MultiSelectField
 from django_resized import ResizedImageField
 from django import forms
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
@@ -123,11 +124,12 @@ class SellOnDebt(models.Model):
     given_date = models.DateField(auto_now_add=True, editable=False)
     due_date = models.DateField(null=True, blank=True)
     username = models.CharField(max_length=200, default='')
-    isfullypaid = models.BooleanField(default=True)
+    isfullypaid = models.BooleanField(default=False)
     ispartlypaid = models.BooleanField(default=False)
     paid_amount = models.IntegerField(default=0)
     left_amount = models.IntegerField(default=0)
     profit = models.IntegerField(default=0)
+    soldproductid = models.IntegerField(default=0)
     
     def save(self, *args, **kwargs):
         super().save()

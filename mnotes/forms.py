@@ -41,13 +41,19 @@ class SignUpForm(UserCreationForm):
         fields = ['username', 'password1', 'password2']
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Nom', 'class': 'form-control', }))
-    password = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Parol', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', 'name': 'password', }))
+    error_messages = {
+        'invalid_login': 'Login yoki parolni xato kiritdingiz, harflarni katta kichikligiga ham e`tibor bering.',
+        #'invalid':'Bu nom bilan akkount mavjud, boshqa nom tanlang',
+    }
+
+    username = forms.CharField(error_messages=error_messages, max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Nom', 'class': 'form-control', }))
+    password = forms.CharField(error_messages=error_messages, max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Parol', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', 'name': 'password', }))
     remember_me = forms.BooleanField(required=False)
 
     class Meta:
         model = User
         fields = ['username', 'password', 'remember_me']
+
 
 class NotesForm(forms.ModelForm):
     nametest = forms.CharField(label='nametest', max_length=100)
@@ -141,6 +147,8 @@ class SellOnDebtForm(forms.ModelForm):
     paid_amount = forms.IntegerField(required=False)
     left_amount = forms.IntegerField(required=False)
     profit = forms.IntegerField(required=False)
+    soldproductid = forms.IntegerField(required=False)
+
     class Meta:
         model = SellOnDebt
         fields = ('__all__')

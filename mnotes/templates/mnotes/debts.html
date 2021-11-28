@@ -17,15 +17,16 @@
     <div class="tab-pane fade show active w-100" id="description" role="tabpanel" aria-labelledby="description-tab">
 <form class="text-center mx-auto w-75 d-flex" action="{% url 'searchselldebt' %}" method="POST"> 
       {% csrf_token %}
-      <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searchedselldebt"> 
+      <input class="form-control text-center my-auto" type="text" placeholder="Qarzni izlash" name="searchedselldebt"> 
       <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
 </form> 
 <!-- DESCRIPTION PAGE -->
 <table class="table table-hover w-100">  
 <br>
   <h5 class="text-center text-uppercase"> <b> Qarzga berilgan mahsulotlar </b></h5>
-  <hr>  
-  <div class="text-center mt-2 mb-2"><a href="{% url 'givedebtselect' %}" class="btn btn-primary"> Qarzga mahsulot berish</a></div>
+  
+  <!-- <div class="text-center mt-2 mb-2"><a href="{% url 'givedebtselect' %}" class="btn btn-primary"> Qarzga mahsulot berish</a></div> -->
+  
   <thead>
     <tr>
       <th scope="col">Mahsulot nomi</th>
@@ -72,7 +73,7 @@
 <div class="tab-pane fade ml-0" id="info" role="tabpanel" aria-labelledby="info-tab">
 <form class="text-center mx-auto w-75 d-flex" action="{% url 'searchbuydebt' %}" method="POST"> 
             {% csrf_token %}
-            <input class="form-control text-center my-auto" type="text" placeholder="Mahsulotni izlash" name="searchedbuydebt"> 
+            <input class="form-control text-center my-auto" type="text" placeholder="Qarzni izlash" name="searchedbuydebt"> 
             <button class="btn btn-secondary my-2 my-sm-0 text-center" type="submit">Izlash</button> 
 </form> 
 
@@ -80,7 +81,7 @@
   <br>
   <h5 class="text-center text-uppercase"> <b> Qarzga olingan mahsulotlar </b></h5>
   <hr>  
-  <div class="text-center mt-2 mb-2"><a href="{% url 'getdebtselect' %}" class="btn btn-primary"> Qarzga mahsulot olish</a></div>
+  <div class="text-center mt-2 mb-2"><a href="{% url 'getdebtselect' %}" class="btn btn-primary"> Qarzga mahsulot olib keldim</a></div>
 
   <thead>
     <tr >
