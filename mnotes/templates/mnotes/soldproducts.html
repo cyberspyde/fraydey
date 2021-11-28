@@ -4,7 +4,6 @@
 
 {% block content %}
 <!-- Classic tabs -->
-<br>
 <form class="text-center mx-auto w-75 d-flex" action="{% url 'searchsoldproduct' %}" method="POST"> 
       {% csrf_token %}
       <input class="form-control text-center my-auto" type="text" placeholder="Sotilgan mahsulotlardan izlash" name="searchedsoldproduct"> 
@@ -41,7 +40,7 @@
   </tbody>
 {% endfor %}
 
-{% for selldebt in soldondebtproducts_list reversed %}
+<!-- {% for selldebt in soldondebtproducts_list reversed %}
   <tbody class="">
     <tr>
       <td><u><a href="{% url 'soldproductview' selldebt.id %}" class="link-dark"> {{selldebt.product_name}} </a></u></td>
@@ -57,7 +56,7 @@
     </tr>
   </tbody>
 {% endfor %}
-
+-->
 </table>   
 
 <script src="/static/js/main.js"></script>
