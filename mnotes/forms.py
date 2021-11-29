@@ -31,6 +31,7 @@ class SignUpForm(UserCreationForm):
     error_messages = {
         'password_mismatch': 'Ikki xil parol kiritildi',
         'unique':'Bu nom bilan akkount mavjud, boshqa nom tanlang',
+        'password_too_short': 'nima gap qovun',
     }
     username = forms.CharField(error_messages=error_messages, max_length=15, required=True, widget=forms.TextInput(attrs={'placeholder': 'Nom', 'class': 'form-control'}))
     password1 = forms.CharField(error_messages=error_messages, max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Parol', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password' }))

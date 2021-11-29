@@ -542,7 +542,8 @@ class signup(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         vendor_Form = self.form_class_vendor(request.POST)
-        
+        if(form.errors):
+            messages.error(request, 'Akkount yaratishda xatolik yuz berdi, nom va parolni harf va raqamlardan kiriting, parolni ikki marta bir xil kiritishni unutmang.')
         if form.is_valid() and vendor_Form.is_valid():            
             vendor_name = vendor_Form.cleaned_data.get('vendor_name')
             vendor_email = vendor_Form.cleaned_data.get('vendor_email')
