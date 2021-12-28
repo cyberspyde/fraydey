@@ -401,10 +401,11 @@ def givedebtselect(request):
 def returndebt(request, id):
     debt = SellOnDebt.objects.get(pk=id)
     soldproduct = ProductSold.objects.get(pk=debt.soldproductid)
-
+    todays_date = timezone.now()
     if request.method == 'POST':
         debt.isfullypaid = True
         soldproduct.isfullypaid = True
+        soldproduct.date_sold = todays_date
         debt.save()
         soldproduct.save()
         redirect('debts')
