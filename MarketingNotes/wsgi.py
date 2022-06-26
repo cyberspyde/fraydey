@@ -17,5 +17,5 @@ application = get_wsgi_application()
 
 AUTOREFRESH = True
 
-application = WhiteNoise(application, root='/home/peter/fraydey/static')
-application.add_files('/home/peter/fraydey/media', prefix='media/')
+application = WhiteNoise(application, root='d:/github/fraydey/static')
+application.add_files('d:/github/fraydey/media', prefix='media/')

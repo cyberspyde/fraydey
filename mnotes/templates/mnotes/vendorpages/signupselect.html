@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>        
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <!-- Themify Icons -->
+        <link rel="stylesheet" href="/static/css/themify-icons.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/styleforsignupselect.css">
+</head>
+<body>
+	<div class="d-flex justify-content-center" style="height: 100vh; background-image: linear-gradient( 135deg, rgba(60, 8, 118, 1) 0%, rgba(250, 0, 118, 1) 150%);">
+		
+		<div class="my-auto text-center">
+				<h2 class="text-light font-weight-bold" >Kimsiz?</h2>
+				<br>
+			  <form method="POST" action="signup/">
+			  	{% csrf_token %}
+				  <input id="customer_vendor" type="submit" class="btn btn-lg" name="vendor" value="SAVDOGAR">
+				  <br>
+				  <br>
+				  <br>
+				  <br>
+				  <input id="customer_vendor2" type="submit" class="btn btn-lg" value="XARIDOR" name="customer">
+			  </form>
+		</div>
+	</div>
+</body>
+</html>
+
+
+

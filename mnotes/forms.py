@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.db import models
 from django.views.generic import UpdateView
-from .models import Notes, Product, Profile, ProductSold, SellOnDebt, BuyOnDebt, Vendor
+from .models import Notes, Product, Profile, ProductSold, BuyOnDebt, Vendor, Customer
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils import timezone
@@ -41,6 +41,13 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'password1', 'password2']
 
+        labels = {
+                'username' : _('username'),
+                'password1' : _('password1'),
+                'password2' : _('password2'),
+
+        }
+
 class LoginForm(AuthenticationForm):
     error_messages = {
         'invalid_login': 'Login yoki parolni xato kiritdingiz, harflarni katta kichikligiga ham e`tibor bering.',
@@ -51,10 +58,28 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(error_messages=error_messages, max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Parol', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', 'name': 'password', }))
     remember_me = forms.BooleanField(required=False)
 
+
+
     class Meta:
         model = User
         fields = ['username', 'password', 'remember_me']
 
+        labels = {
+            'username' : _('username'),
+            'password' : _('username'),
+
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['username'].error_messages.update({
+            'required': 'Nomni kiritmadingiz!',
+        })
+        self.fields['password'].error_messages.update({
+            'required': 'Parolni kiritmadingiz!',
+        })        
 
 class NotesForm(forms.ModelForm):
     nametest = forms.CharField(label='nametest', max_length=100)
@@ -64,9 +89,14 @@ class NotesForm(forms.ModelForm):
 
 class ProductForm(forms.ModelForm):
     isdebt = forms.BooleanField(required=False)
+    sold_count = forms.IntegerField(required=False)
+    discount = forms.IntegerField(required=False)
+    product_name = forms.CharField(required=False)
     product_price_initial = forms.IntegerField(required=False)
     product_price_told = forms.IntegerField(required=False)
-
+    product_count = forms.IntegerField(required=False)
+    last_discount_date = forms.DateField(required=False)
+    discount_in_sum = forms.IntegerField(required=False)
     class Meta:
         model = Product
         fields = ('__all__')
@@ -77,6 +107,7 @@ class ProductForm(forms.ModelForm):
             'product_price_told' : forms.NumberInput(attrs={'placeholder': 'Aytilar narx', 'class' : 'form-control', }),
             'product_price_told' : forms.NumberInput(attrs={'placeholder': 'Aytilar narx', 'class' : 'form-control', }),
             'product_count' : forms.NumberInput(attrs={'placeholder': 'Son', 'class': 'form-control', }),
+            'discount' : forms.NumberInput(attrs={'placeholder': 'Chegirma', 'class': 'form-control', })
         }
         labels = {
             'product_name' : _('product_name'),
@@ -89,39 +120,55 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
 
-        # add custom error messages
-        self.fields['product_name'].error_messages.update({
-            'required': 'Mahsulot nomini kiritmadingiz!',
-        })
-        self.fields['product_price_initial'].error_messages.update({
-            'required': 'Mahsulot tan narxini kiritmadingiz!',
-        })        
-        self.fields['product_price_told'].error_messages.update({
-            'required': 'Mahsulot aytilish kiritmadingiz!',
-        })
-        self.fields['product_count'].error_messages.update({
-            'required': 'Mahsulot sonini kiritmadingiz!',
-        })
-class ProductSoldForm(forms.ModelForm):
-    isdebt = forms.BooleanField(required=False)
+        # # add custom error messages
+        # self.fields['product_name'].error_messages.update({
+        #     'required': 'Mahsulot nomini kiritmadingiz!',
+        # })
+        # self.fields['product_price_initial'].error_messages.update({
+        #     'required': 'Mahsulot tan narxini kiritmadingiz!',
+        # })        
+        # self.fields['product_price_told'].error_messages.update({
+        #     'required': 'Mahsulot aytilish kiritmadingiz!',
+        # })
+        # self.fields['product_count'].error_messages.update({
+        #     'required': 'Mahsulot sonini kiritmadingiz!',
+        # })
+class ProductSoldForm(forms.ModelForm):  
     product_name = forms.CharField(required=False)
-    product_sold_id = forms.IntegerField(required=False)
-    profit = forms.IntegerField(required=False)
+    product_sold_count = forms.IntegerField(required=False)
+    product_sold_price = forms.IntegerField(required=False)
+    due_date = forms.DateField(required=False)   
+    customer_name = forms.CharField(required=False)
+    customer_phone = forms.IntegerField(required=False)     
     paid_amount = forms.IntegerField(required=False)
     left_amount = forms.IntegerField(required=False)
+    isfullypaid = forms.BooleanField(required=False)
+    ispartlypaid = forms.BooleanField(required=False)    
+    profit = forms.IntegerField(required=False)
     username = forms.CharField(required=False)
+    isdebt = forms.BooleanField(required=False)
+
     class Meta:
         model = ProductSold
         fields = ('__all__')
-        exclude = ['user']
+        exclude = ['user', 'given_date', 'username']
         widgets = {
             'product_sold_price' : forms.NumberInput(attrs={'placeholder' : 'Sotilgan mahsulot narxi', 'class' : 'form-control'}),
             'product_sold_count' : forms.NumberInput(attrs={'placeholder' : 'Sotilgan mahsulot soni', 'class' : 'form-control'}),
+            'product_name' : forms.TextInput(attrs={'placeholder' : 'Mahsulot nomi', 'class' : 'form-control'}),
+            'customer_name' : forms.TextInput(attrs={'class' : 'form-control'}),
+            'customer_phone' : forms.NumberInput(attrs={'class' : 'form-control'}),
         }
         labels = {
             'product_sold_price' : _('product_sold_price'),
             'product_sold_count' : _('product_sold_count'),
             'isdebt' : _('isdebt'),
+            'product_name' : _('product_name'),
+            'customer_name' : _('customer_name'),
+            'customer_phone' : _('customer_phone'),
+            'due_date' : _('due_date'),
+            'paid_amount' : _('paid_amount'),
+            'left_amount' : _('left_amount'),
         }
 
     def __init__(self, *args, **kwargs):
@@ -133,59 +180,10 @@ class ProductSoldForm(forms.ModelForm):
         })
         self.fields['product_sold_price'].error_messages.update({
             'required': 'Mahsulotni sotilgan narxini kiritmadingiz!',
-        })
- 
+        })        
 
-class SellOnDebtForm(forms.ModelForm):
-    due_date = forms.DateField(required=False)
-    product_name = forms.CharField(max_length=200, required=False)
-    product_count = forms.IntegerField(required=False)
-    product_price = forms.IntegerField(required=False)
-    customer_name = forms.CharField(required=False)
-    customer_phone = forms.IntegerField(required=False)
-    isfullypaid = forms.BooleanField(required=False)
-    ispartlypaid = forms.BooleanField(required=False)
-    paid_amount = forms.IntegerField(required=False)
-    left_amount = forms.IntegerField(required=False)
-    profit = forms.IntegerField(required=False)
-    soldproductid = forms.IntegerField(required=False)
-
-    class Meta:
-        model = SellOnDebt
-        fields = ('__all__')
-        exclude = ('username', 'given_date')
-
-        widgets = {
-            'product_name' : forms.TextInput(attrs={'placeholder' : 'Mahsulot nomi', 'class' : 'form-control'}),
-            'product_price' : forms.NumberInput(attrs={'placeholder' : 'Mahsulot narxi', 'class' : 'form-control'}),
-            'customer_name' : forms.TextInput(attrs={'class' : 'form-control'}),
-            'customer_phone' : forms.NumberInput(attrs={'class' : 'form-control'}),
-        }
-
-        labels = {
-            'product_name' : _('product_name'),
-            'product_price' : _('product_price'),
-            'product_count' : _('product_count'),
-            'customer_name' : _('customer_name'),
-            'customer_phone' : _('customer_phone'),
-            'due_date' : _('due_date'),
-            'paid_amount' : _('paid_amount'),
-            'left_amount' : _('left_amount'),
-
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(SellOnDebtForm, self).__init__(*args, **kwargs)
-
-        # add custom error messages
         self.fields['due_date'].error_messages.update({
             'required': 'Mahsulotni qaytarish kunini kiritmadingiz!',
-        })
-        self.fields['product_count'].error_messages.update({
-            'required': 'Mahsulotni sonini kiritmadingiz!',
-        })
-        self.fields['product_price'].error_messages.update({
-            'required': 'Mahsulotni narxini kiritmadingiz!',
         })
         self.fields['customer_name'].error_messages.update({
             'required': 'Qarzdor ismini kiritmadingiz!',
@@ -193,12 +191,14 @@ class SellOnDebtForm(forms.ModelForm):
         self.fields['customer_phone'].error_messages.update({
             'required': 'Qarzdor telefon raqamini kiritmadingiz!',
         })
+ 
+
 
 class BuyOnDebtForm(forms.ModelForm):
     due_date = forms.DateField(required=False)
     product_name = forms.CharField(max_length=200, required=False)
-    product_count = forms.IntegerField(required=False)
-    product_price = forms.IntegerField(required=False)
+    product_bought_count = forms.IntegerField(required=False)
+    product_bought_price = forms.IntegerField(required=False)
     isfullypaid = forms.BooleanField(required=False)
     ispartlypaid = forms.BooleanField(required=False)
     paid_amount = forms.IntegerField(required=False)
@@ -211,15 +211,18 @@ class BuyOnDebtForm(forms.ModelForm):
         exclude = ('user', 'given_date')
 
         widgets = {
-            'product_name' : forms.TextInput(attrs={'placeholder' : 'Mahsulot nomi', 'class' : 'form-control'}),
-            'product_price' : forms.NumberInput(attrs={'placeholder' : 'Mahsulot narxi', 'class' : 'form-control'}),
+            'product_name' : forms.TextInput(attrs={'placeholder' : '', 'class' : 'form-control'}),
+            'product_bought_price' : forms.NumberInput(attrs={'placeholder' : '', 'class' : 'form-control'}),
+            'product_bought_count' : forms.NumberInput(attrs={'placeholder' : '', 'class' : 'form-control'}),
             'owner_name' : forms.TextInput(attrs={'class' : 'form-control'}),
             'owner_phone' : forms.NumberInput(attrs={'class' : 'form-control'}),
+        
         }
 
         labels = {
             'product_name' : _('product_name'),
-            'product_price' : _('product_price'),
+            'product_bought_count' : _('product_bought_count'),
+            'product_bought_price' : _('product_bought_price'),
             'owner_name' : _('owner_name'),
             'owner_phone' : _('owner_phone'),
             'due_date' : _('due_date'),
@@ -235,10 +238,10 @@ class BuyOnDebtForm(forms.ModelForm):
         self.fields['due_date'].error_messages.update({
             'required': 'Mahsulotni qaytarish kunini kiritmadingiz!',
         })
-        self.fields['product_count'].error_messages.update({
+        self.fields['product_bought_count'].error_messages.update({
             'required': 'Mahsulotni sonini kiritmadingiz!',
         })
-        self.fields['product_price'].error_messages.update({
+        self.fields['product_bought_price'].error_messages.update({
             'required': 'Mahsulotni narxini kiritmadingiz!',
         })
         self.fields['owner_name'].error_messages.update({
@@ -281,4 +284,23 @@ class VendorForm(forms.ModelForm):
         exclude = ['username', 'password']
         labels = {
             'store_type' : _('store_type'),
+            'vendor_name' : _('vendor_name'),
+            'vendor_phone_number' : _('vendor_phone_number'),
+        }
+
+
+class CustomerForm(forms.ModelForm):
+    customer_name = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={'placeholder': 'Savdogar ismi', 'class': 'form-control'}))
+    customer_email = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Savdogar ismi', 'class': 'form-control'}))
+    customer_insta = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Savdogar ismi', 'class': 'form-control'}))
+    customer_phone_number = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'placeholder': 'Savdogar telefon raqami', 'class': 'form-control'}))
+    customer_tg = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Savdogar ismi', 'class': 'form-control'}))
+    username = forms.CharField(required=False)
+    password = forms.CharField(required=False)
+
+    class Meta:
+        model = Customer
+        fields = ('__all__')
+        labels = {
+            'customer_name' : _('customer_name'),
         }

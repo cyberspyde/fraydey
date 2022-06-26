@@ -1,0 +1,78 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulotlar {% endblock title %}
+{% block content %}
+
+<br>
+  <div class="">
+     <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Barcha mahsulotlar</h4>
+                        <p class="mb-0">Bu bo'lim orqali do'konda mavjud barcha mahsulotlarni ko'rishingiz, yangilashingiz va ularni butunlay o'chirishingiz mumkin.</p>
+                    </div>
+                    <a href="{% url 'createproduct' %}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Mahsulot qo'shish</a>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="table-responsive rounded mb-3">
+                <table class="data-tables table mb-0 tbl-server-info">
+                    <thead class="bg-white text-uppercase">
+                        <tr class="ligth ligth-data">
+                            
+                            <th>
+                                <div class="checkbox d-inline-block">
+                                    <input type="checkbox" class="checkbox-input" id="checkbox1">
+                                    <label for="checkbox1" class="mb-0"></label>
+                                </div>
+                            </th>
+                        
+                            <th>Mahsulot</th>
+                            <th>Tan narxi</th>
+                            <th>Yaratilgan sana</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ligth-body">
+                        {% for product in product_list reversed %}
+                        <tr>
+                            
+                            <td>
+                                <div class="checkbox d-inline-block">
+                                    <input type="checkbox" class="checkbox-input" id="checkbox2">
+                                    <label for="checkbox2" class="mb-0"></label>
+                                </div>
+                            </td>
+                        
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if product.product_img %}
+                                    <img src="{{product.product_img.url}}" class="img-fluid rounded avatar-50 mr-3" alt="Rasm mavjud emas">
+                                    {% else %}
+                                    <img src="/static/images/cancel.png" class="img-fluid rounded avatar-50 mr-3" alt="Rasm mavjud emas">
+                                    {% endif %}
+
+                                    <div>
+                                        <a href="{% url 'productview' product.id%}">{{product.product_name}}</a>
+                                        <p class="mb-0"><small></small></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{product.product_price_initial}}</td>
+                            <td>
+                                {{product.datetime}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      </div>
+
+{% endblock %}

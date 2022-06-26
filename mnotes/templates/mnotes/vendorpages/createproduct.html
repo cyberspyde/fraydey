@@ -1,0 +1,123 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulot yaratish {% endblock title %}
+{% block content %}
+<div class="">
+     <div class="container add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Mahsulot yaratish</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST" enctype="multipart/form-data"> 
+                          {% csrf_token %}
+                            <div class="row"> 
+                                <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label for="product_name">Mahsulot nomi *</label>
+                                        <input name="product_name" type="text" class="form-control" placeholder="Mahsulot nomini kiriting." data-errors="Mahsulot nomini kiriting.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_count">Mahsulot soni *</label>
+                                        <input name="product_count" type="text" class="form-control" placeholder="Mahsulot sonini kiriting" data-errors="Mahsulot sonini kiriting.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_price_initial">Tan narxi *</label>
+                                        <input name="product_price_initial" type="text" class="form-control" placeholder="Mahsulot tan narxini kiriting" data-errors="Mahsulot tan narxini kiriting.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_price_told">Aytilish narxi *</label>
+                                        <input name="product_price_told" type="text" class="form-control" placeholder="Mahsulot aytilish narxini kiriting" data-errors="Mahsulot aytilish narxini kiriting.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group">
+                                        <label>Razmerlari *</label>
+                                        {{form.product_size}}
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sezon *</label>
+                                        {{form.product_season}}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="product_img">Rasm</label>
+                                        {{form.product_img}}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <label>Qarzga oldim *</label>
+                                        <input class="up-down" name="isdebt" type="checkbox" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+                                
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="customer_name">Xaridor ismi *</label>
+                                        <input name="customer_name" type="text" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>  
+
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="customer_phone">Xaridor telefon raqami *</label>
+                                        <input name="customer_name" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="due_date">Qarzni qaytarish sanasi *</label>
+                                        <input name="due_date" type="date" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-12 text-center myElement">
+                                    <div class="form-group">
+                                        <label>Bo'lib to'lash *</label>
+                                        <input class="up-down-partlypaid" name="ispartlypaid" type="checkbox" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6 myElementPartlyPaid">
+                                    <div class="form-group">
+                                        <label for="paid_amount">To'langan summa *</label>
+                                        <input name="paid_amount" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+                            </div>                            
+                            <button type="submit" class="btn btn-primary mr-2">Yaratish</button>
+                            <button type="reset" class="btn btn-danger">Tozalash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

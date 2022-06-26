@@ -1,0 +1,78 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulotlar {% endblock title %}
+{% block content %}
+  <div class="">
+     <div class="container add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Qarzga olingan mahsulot</h4>
+                        </div>
+                        <div>
+                            <h4>Mahsulot nomi: {{product.product_name}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Qarzni qaytarish kuni *</label>
+                                        <input type="date" class="form-control" name="due_date" />
+                                    </div>
+                                </div>  
+                                <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label>Qarzga olingan mahsulot soni *</label>
+                                        <input type="number" class="form-control" placeholder="" name="product_bought_count">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Qarzga olingan mahsulot narxi *</label>
+                                        <input type="number" class="form-control" placeholder="" name="product_bought_price">
+                                    </div>
+                                </div> 
+                                <div class="col-md-6"> 
+                                    <div class="form-group">
+                                        <label>Sotuvchi ismi</label>
+                                        <input type="text" class="form-control" placeholder="" name="owner_name">
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sotuvchi telefon raqami (mavjud bo'lsa) </label>
+                                        <input name="owner_phone" type="number" class="form-control" placeholder="">
+                                    </div>
+                                </div>   
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <label>Bo'lib to'lash *</label>
+                                        <input class="up-down-partlypaid" name="ispartlypaid" type="checkbox" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-12 myElementPartlyPaid">
+                                    <div class="form-group">
+                                        <label for="paid_amount">To'langan summa *</label>
+                                        <input name="paid_amount" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>                           
+                            </div>                            
+                            <button type="submit" class="btn btn-primary mr-2">Saqlash</button>
+                            <button type="reset" class="btn btn-danger">Tozalash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+      </div>
+{% endblock %}

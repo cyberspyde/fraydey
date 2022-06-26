@@ -1,0 +1,71 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulot yangilash {% endblock title %}
+{% block content %}
+<div class="">
+     <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Mahsulot yangilash</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST" enctype="multipart/form-data"> 
+                          {% csrf_token %}
+                            <div class="row"> 
+                                <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label for="product_name">Mahsulot nomi *</label>
+                                        {{form.product_name}}
+                                    </div>
+                                </div>    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_count">Mahsulot soni *</label>
+                                        {{form.product_count}}
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_price_initial">Tan narxi *</label>
+                                        {{form.product_price_initial}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_price_told">Aytilish narxi *</label>
+                                        {{form.product_price_told}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group">
+                                        <label>Razmerlari *</label>
+                                        {{form.product_size}}
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sezon *</label>
+                                        {{form.product_season}}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="product_img">Rasm</label>
+                                        {{form.product_img}}
+                                    </div>
+                                </div>
+                            </div>                            
+                            <button type="submit" class="btn btn-primary mr-2">Yaratish</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

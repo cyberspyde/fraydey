@@ -1,0 +1,51 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Odamlar qarzlari {% endblock title %}
+{% block content %}
+<br>
+<div class="">
+     <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Qarzga sotilgan mahsulotlar</h4>
+                        <p class="mb-0">Odamlarga qarzga berilgan mahsulotlar va ular haqidagi barcha ma'lumotlarni shu yerdan topib ularni boshqarish imkoniyati. </p>
+                    </div>
+                    <a href="{% url 'selldebtselect' %}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Qarzga mahsulot berish</a>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive rounded mb-3">
+                <table class="data-tables table mb-0 tbl-server-info">
+                    <thead class="bg-white text-uppercase">
+                        <tr class="ligth ligth-data">
+                            <th>Qarz berilgan kun</th>
+                            <th>Mahsulot</th>
+                            <th>Xaridor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ligth-body">
+                      {% for product in sellondebt_list reversed%}
+                        <tr>
+                            <td>{{product.date_sold}}</td>
+                            <td><a href="{% url 'selldebtview' product.id %}" class="link-dark"> {{product.product_name}} </a></td>
+                            <td>{{product.customer_name}}</td>
+                            {% if product.isfullypaid %}
+                            <td><div class="badge badge-success">To'langan</div></td>
+                            {% elif product.ispartlypaid %}
+                            <td><div class="badge badge-warning">Bo'lib to'langan</div></td>
+                            {% else %}
+                            <td><div class="badge badge-danger">To'lanmagan</div></td>
+                            {% endif %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

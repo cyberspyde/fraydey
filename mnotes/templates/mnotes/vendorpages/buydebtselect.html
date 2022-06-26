@@ -1,0 +1,41 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulotlar {% endblock title %}
+{% block content %}
+<br>
+<h3 class="text-center text-success">Qarzga olib kelingan mahsulotni tanlang</h3>
+<div class="col-lg-12 container">
+    <div class="table-responsive mb-3">
+    <table class="data-tables table mb-0 tbl-server-info">
+        <thead class="bg-white text-uppercase">
+            <tr class="ligth ligth-data">
+                <th>Mahsulot</th>
+                <th>Tan narxi</th>
+            </tr>
+        </thead>
+        <tbody class="ligth-body">
+            {% for product in product_list reversed %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        {% if product.product_img %}
+                        <img src="{{product.product_img.url}}" class="img-fluid rounded avatar-50 mr-3" alt="Rasm mavjud emas">
+                        {% else %}
+                        <img src="/static/images/cancel.png" class="img-fluid rounded avatar-50 mr-3" alt="Rasm mavjud emas">
+                        {% endif %}
+                        <div>
+                            <a href="{% url 'buydebt' product.id%}">{{product.product_name}}</a>
+                            <p class="mb-0"><small></small></p>
+                        </div>
+                    </div>
+                </td>
+                <td>{{product.product_price_initial}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<hr>
+
+{% endblock %}

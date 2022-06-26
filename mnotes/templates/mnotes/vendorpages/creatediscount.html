@@ -1,0 +1,38 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulotlar {% endblock title %}
+{% block content %}
+  <div class="">
+     <div class="container add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Bugun chegirma qilinadigan mahsulot</h4>
+                        </div>
+                        <div>
+                            <h4>Mahsulot nomi: {{product.product_name}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Chegirmani foizda kiriting: (foiz belgisini kiritmang) </label>
+                                        <input name="discount" type="number" class="form-control" placeholder="">
+                                    </div>
+                                </div>                             
+                            </div>                            
+                            <button type="submit" class="btn btn-primary mr-2">Saqlash</button>
+                            <button type="reset" class="btn btn-danger">Tozalash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+      </div>
+{% endblock %}

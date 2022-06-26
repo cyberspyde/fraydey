@@ -1,0 +1,46 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+
+{% block title %} Mahsulot sahifa {% endblock title %}
+
+{% block content %}
+<div class="container">
+<h3 class="text-center text-uppercase font-weight-bold w-100">Sotilgan mahsulot haqida to'liq ma'lumot</h3>
+      <hr> 
+      <div class="row">
+        <div class="col-md-5 text-center">
+          {% if product.product_img %}
+          <img class="img-thumbnail w-100 d-block" width="200px" height="200px" src="{{ product.product_img.url }}" alt="Slide Image" loading="lazy">
+          {% else %}
+          <img class="img-thumbnail w-100 d-block" src="" alt="RASM MAVJUD EMAS" loading="lazy">
+          {% endif %}
+        </div>
+
+
+      <div class="col-md-7 text-center my-auto">      
+      <div><span class="font-weight-bold">Status :</span><span class="ml-2">
+      {% if soldproduct_props.isfullypaid %}
+      <div class="badge badge-success">To'langan</div>
+      {% elif soldproduct_props.ispartlypaid%}
+      <div class="badge badge-warning">Bo'lib to'langan</div>
+      <div><span class="font-weight-bold">To'langan pul :</span><span class="ml-2">{{soldproduct_props.paid_amount}}</span></div>
+      <div><span class="font-weight-bold">Qolgan pul :</span><span class="ml-2">{{soldproduct_props.left_amount}}</span></div>
+      {% elif soldproduct_props.isdebt %}
+      <div class="badge badge-danger">To'lanmagan</div>
+      {% endif %}  
+      </span></div>
+      <div><span class="font-weight-bold">Mahsulot nomi:</span><span class="ml-2">{{soldproduct_props.product_name}} </span></div>
+      <div><span class="font-weight-bold">Sotilgan mahsulot soni:</span><span class="ml-2">{{soldproduct_props.product_sold_count}}</span></div>
+      <div><span class="font-weight-bold">Sotilgan mahsulot narxi:</span><span class="ml-2">{{soldproduct_props.product_sold_price}} Sum</span></div>
+      <div><span class="font-weight-bold">Sotilgan kuni :</span><span class="ml-2">{{soldproduct_props.date_sold}}</span></div>
+      <div><span class="font-weight-bold">Shu savdodan qilingan foyda :</span><span class="ml-2">{{soldproduct_props.profit}}</span></div>
+
+      <div class="mt-3 w-100 text-center">
+        <a href="{% url 'soldproducts' %}" class="btn btn-success mr-2 mb-5"> Ortga qaytish</a>
+      </div>
+      </div>
+      </div>
+    </div>
+    <br>
+<script src="/static/js/main.js"></script>
+            
+{% endblock %}

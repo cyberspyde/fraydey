@@ -1,12 +1,8 @@
 
 (function ($) {
     "use strict";
-        $('.input3-debt').slideUp(300);
-        $('.input3-size').slideUp(300);
-        $('.input3-season').slideUp(300);
-        $('.input3-color').slideUp(300);
-        $('.input3-photo').slideUp(300);
-        $('.input3-debt-part').slideUp(300);
+
+
     /*==================================================================
     [ Focus Contact2 ]*/
     $('.input3').each(function(){
@@ -34,65 +30,57 @@
             $('.input3-select').slideDown(300);
         }
     });
+        
+  
+    
+    /*==================================================================
+    [ Validate ]*/
+    var name = $('.validate-input input[name="name"]');
+    var email = $('.validate-input input[name="email"]');
+    var message = $('.validate-input textarea[name="message"]');
 
-    $("#isdebt").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-debt').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-debt').slideUp(300);
-        }
-    });   
 
-    $("#hascolor").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-color').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-color').slideUp(300);
-        }
-    }); 
+    $('.validate-form').on('submit',function(){
+        var check = true;
 
-    $("#hasseason").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-season').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-season').slideUp(300);
+        if($(name).val().trim() == ''){
+            showValidate(name);
+            check=false;
         }
-    }); 
 
-    $("#hassize").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-size').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-size').slideUp(300);
-        }
-    }); 
 
-    $("#hasphoto").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-photo').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-photo').slideUp(300);
+        if($(email).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+            showValidate(email);
+            check=false;
         }
+
+        if($(message).val().trim() == ''){
+            showValidate(message);
+            check=false;
+        }
+
+        return check;
     });
 
-    $("#ispartlypaid").on('change', function(){
-        if ($(this).is(":checked")) {
-            $('.input3-debt-part').slideDown(300);
-            console.log('Checked');
-        } else {
-            console.log('Not Checked');
-            $('.input3-debt-part').slideUp(300);
-        }
+
+    $('.validate-form .input3').each(function(){
+        $(this).focus(function(){
+           hideValidate(this);
+       });
     });
+
+    function showValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).addClass('alert-validate');
+    }
+
+    function hideValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).removeClass('alert-validate');
+    }
+    
+    
 
 })(jQuery);

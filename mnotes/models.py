@@ -90,6 +90,10 @@ class Product(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     isdebt = models.BooleanField(default=False)
+    sold_count = models.IntegerField(default=0)
+    discount = models.IntegerField(default=0)
+    discount_in_sum = models.IntegerField(default=0)
+    last_discount_date = models.DateTimeField()
 
     def __str__(self):
         output = str(self.user)
@@ -99,9 +103,9 @@ class Product(models.Model):
         super().save()
 
 class ProductSold(models.Model):
+
     product_sold_price = models.IntegerField()
     product_sold_count = models.IntegerField()
-    product_sold_id = models.IntegerField(default=0)
     product_name = models.CharField(max_length=200, default='')
     profit = models.IntegerField(default=0)
     isdebt = models.BooleanField(default=False)
@@ -109,35 +113,20 @@ class ProductSold(models.Model):
     ispartlypaid = models.BooleanField(default=False)
     paid_amount = models.IntegerField(default=0)
     left_amount = models.IntegerField(default=0)
-    username = models.CharField(max_length=200, default='')
+    username = models.CharField(max_length=200)
     date_sold = models.DateField(auto_now_add=True, editable=False)
-
-    def save(self, *args, **kwargs):
-        super().save()
-
-class SellOnDebt(models.Model):
-    product_name = models.CharField(max_length=200)
-    product_price = models.IntegerField()
-    product_count = models.IntegerField()
     customer_phone = models.IntegerField(blank=True, null=True)
     customer_name = models.CharField(max_length=200)
-    given_date = models.DateField(auto_now_add=True, editable=False)
     due_date = models.DateField(null=True, blank=True)
-    username = models.CharField(max_length=200, default='')
-    isfullypaid = models.BooleanField(default=False)
-    ispartlypaid = models.BooleanField(default=False)
-    paid_amount = models.IntegerField(default=0)
-    left_amount = models.IntegerField(default=0)
     profit = models.IntegerField(default=0)
-    soldproductid = models.IntegerField(default=0)
-    
     def save(self, *args, **kwargs):
         super().save()
+
 
 class BuyOnDebt(models.Model):
     product_name = models.CharField(max_length=200)
-    product_count = models.IntegerField(default=0)
-    product_price = models.IntegerField(default=0)
+    product_bought_count = models.IntegerField(default=0)
+    product_bought_price = models.IntegerField(default=0)
     owner_name = models.CharField(max_length=200)
     owner_phone = models.IntegerField(default=0)
     date_bought = models.DateField(auto_now_add=True, editable=False)
@@ -177,3 +166,19 @@ class Vendor(models.Model):
     date_registered = models.DateField(auto_now_add=True, editable=False)
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
+    coin_balance = models.IntegerField(default=0)
+
+
+class Customer(models.Model):
+
+    customer_name = models.CharField(max_length=200)
+    customer_email = models.CharField(max_length=200)
+    customer_phone_number = models.IntegerField(blank=True, null=True)
+    customer_insta = models.CharField(max_length=200)
+    customer_tg = models.CharField(max_length=200)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    date_registered = models.DateField(auto_now_add=True, editable=False)
+
+    coin_balance = models.IntegerField(default=0)
+    

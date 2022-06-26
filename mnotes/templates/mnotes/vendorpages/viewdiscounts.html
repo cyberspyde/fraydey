@@ -1,0 +1,47 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Odamlar qarzlari {% endblock title %}
+{% block content %}
+<br>
+<div class="">
+     <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Barcha yaratilgan chegirmalar</h4>
+                        <p class="mb-0">Chegirmalar bo'limi orqali shu kungacha yaratilgan barcha chegirmalarni kuzatib borishingiz mumkin </p>
+                    </div>
+                    <a href="{% url 'selldebtselect' %}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Yangi chegirma qilish</a>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive rounded mb-3">
+                <table class="data-tables table mb-0 tbl-server-info">
+                    <thead class="bg-white text-uppercase">
+                        <tr class="ligth ligth-data">
+                            <th>Chegirma qilingan kun</th>
+                            <th>Mahsulot</th>
+                            <th>Chegirma foizda % </th>
+                            <th>Chegirma sumda</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ligth-body">
+                      {% for discount in discounted_product_list reversed %}
+                        {% if discount.discount != 0 %}
+                        <tr>
+                            <td>{{discount.last_discount_date}}</td>
+                            <td> {{discount.product_name}}</td>
+                            <td>{{discount.discount}}</td>
+                            <td>{{discount.discount_in_sum}}</td>
+                        </tr>
+                        {% endif %}
+                      {% endfor %}
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

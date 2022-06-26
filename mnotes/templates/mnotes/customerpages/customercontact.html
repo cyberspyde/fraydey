@@ -1,0 +1,35 @@
+{% extends 'mnotes/customerpages/customerdashboard.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!-- Contact Form Begin -->
+    <div class="contact-form spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>Xabar qoldirish</h2>
+                    </div>
+                </div>
+            </div>
+            <form action="#">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <input type="text" placeholder="Sizning ismingiz">
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <input type="text" placeholder="Ro'yxatdan o'tkazilgan login">
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <textarea placeholder="Murojaatingizni to'liq yozib qoldiring"></textarea>
+                        <button type="submit" class="site-btn">Jo'natish</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Contact Form End -->
+
+{% endblock %}

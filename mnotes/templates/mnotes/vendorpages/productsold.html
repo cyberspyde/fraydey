@@ -1,0 +1,94 @@
+{% extends 'mnotes/vendorpages/dashboard.html' %}
+{% block title %} Mahsulot sotdim {% endblock title %}
+{% block content %}
+<div class="">
+     <div class="container add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Mahsulot Sotdim</h4>
+                        </div>
+                        <div>
+                            <h4>Mahsulot nomi: {{product.product_name}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                          {% csrf_token %}
+                            <div class="row">                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sotilgan narxi *</label>
+                                        <input name="product_sold_price" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-6" id="">
+                                    <div class="form-group">
+                                        <label>Sotilgan mahsulot soni *</label>
+                                        <input name="product_sold_count" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>   
+
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group">
+                                        <label>Qarzga berdim *</label>
+                                        <input class="up-down" name="isdebt" type="checkbox" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+                                
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="customer_name">Xaridor ismi *</label>
+                                        <input name="customer_name" type="text" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>  
+
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="customer_phone">Xaridor telefon raqami *</label>
+                                        <input name="customer_name" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6 myElement">
+                                    <div class="form-group">
+                                        <label for="due_date">Qarzni qaytarish sanasi *</label>
+                                        <input name="due_date" type="date" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-12 text-center myElement">
+                                    <div class="form-group">
+                                        <label>Bo'lib to'lash *</label>
+                                        <input class="up-down-partlypaid" name="ispartlypaid" type="checkbox" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6 myElementPartlyPaid">
+                                    <div class="form-group">
+                                        <label for="paid_amount">To'langan summa *</label>
+                                        <input name="paid_amount" type="number" class="form-control" placeholder="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div> 
+                            </div>  
+                            <hr>                          
+                            <button type="submit" class="btn btn-success mr-2">Saqlash</button>
+                            <button type="reset" class="btn btn-info">Tozalash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
