@@ -1,4 +1,10 @@
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<div class="container">
+    <div class="d-flex justify-content-center" style="height: 80vh;">
+    <div class="my-auto"><h3 class="text-uppercase text-info font-weight-bold">Under development</h3></div>
+</div>
 
+<!--
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -7,9 +13,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title>Asosiy bo'lim</title>
       
-      <!-- Favicon -->
       <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
-      <!-- <link rel="stylesheet" href="/static/css/backend-plugin.min.css"> -->
       <link rel="stylesheet" href="{% static 'css/backend.css?v=1.0.0' %}">
       <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}">
       <link rel="stylesheet" href="{% static 'vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css' %}">
@@ -17,7 +21,6 @@
       <link rel="stylesheet" href="{% static 'css/showandhide.css' %}">
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
-	<!-- Css Styles -->
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
@@ -43,12 +46,12 @@
       </style>
     </head>
   <body class="  ">
-    <!-- Page Preloder -->
+
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
-    <!-- Humberger Begin -->
+
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
@@ -62,7 +65,7 @@
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
         <div class="humberger__menu__widget">
-<!--             <div class="header__top__right__language">
+             <div class="header__top__right__language">
                 <img src="img/language.png" alt="">
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
@@ -70,7 +73,7 @@
                     <li><a href="#">Spanis</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
-            </div> -->
+            </div> 
             
             {% if user.is_authenticated %}
 
@@ -123,9 +126,7 @@
             </ul>
         </div>
     </div>
-    <!-- Humberger End -->
 
-    <!-- Header Section Begin -->
     <header class="header">
         <div class="header__top">
             <div class="container">
@@ -201,10 +202,10 @@
             </div>
         </div>
     </header>
-    <!-- Header Section End -->
+
 {% block content %}
 
-    <!-- Hero Section Begin -->
+
     <section class="hero">
         <div class="container">
             <div class="row">
@@ -254,9 +255,7 @@
             </div>
         </div>
     </section>
-    <!-- Hero Section End -->
 
-    <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container">
             <div class="row">
@@ -290,9 +289,9 @@
             </div>
         </div>
     </section>
-    <!-- Categories Section End -->
+
 <hr>
-    <!-- Featured Section Begin -->
+
     <section class="featured spad">
         <div class="container">
             <div class="row">
@@ -435,9 +434,9 @@
             </div>
         </div>
     </section>
-    <!-- Featured Section End -->
+
 <hr>
-    <!-- Banner Begin -->
+-->
 <!--     <div class="banner">
         <div class="container">
             <div class="row">
@@ -457,6 +456,7 @@
     <!-- Banner End -->
 
     <!-- Latest Product Section Begin -->
+    <!--
     <section class="latest-product spad">
         <div class="container">
             <div class="row">
@@ -658,9 +658,7 @@
             </div>
         </div>
     </section>
-    <!-- Latest Product Section End -->
-
-    <!-- Blog Section Begin -->
+-->
 <!--     <section class="from-blog spad">
         <div class="container">
             <div class="row">
@@ -719,9 +717,7 @@
             </div>
         </div>
     </section> -->
-    <!-- Blog Section End -->
-
-    <!-- Footer Section Begin -->
+<!--
     <footer class="footer spad">
         <div class="container">
             <div class="row">
@@ -730,14 +726,14 @@
                         <div class="footer__about__logo">
                             <a href="{% url 'customerdashboard' %}"><p style="font-size: 30px;"> <b> Fraydey </b></p></a>
                         </div>
-<!--                         <ul>
+                         <ul>
                             <li>Offis mansili: mavjud emas! </li>
                             <li>Telefon raqam: +65 11.188.888</li>
                             <li>Email: fraydeyuz@gmail.com</li>
-                        </ul> -->
+                        </ul> 
                     </div>
                 </div>
-<!--                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
                         <h6>Useful Links</h6>
                         <ul>
@@ -773,7 +769,7 @@
                             <a href="#"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
-                </div> -->
+                </div> 
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -786,13 +782,10 @@
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
+
 <br>
     {% endblock %}
 
-
-
-    <!-- Wrapper End-->
     <footer class="iq-footer">
             <div class="container-fluid">
             <div class="card">
@@ -812,19 +805,19 @@
             </div>
         </div>
     </footer>
-    <!-- Backend Bundle JavaScript -->
+
     <script src="{% static 'js/backend-bundle.min.js' %}"></script>
     
-    <!-- Table Treeview JavaScript -->
+
     <script src="{% static 'js/table-treeview.js' %} "></script>
     
-    <!-- Chart Custom JavaScript -->
+
     <script src="{% static 'js/customizer.js' %} "></script>
     
-    <!-- Chart Custom JavaScript -->
+ 
     <script async src="{% static 'js/chart-custom.js' %} "></script>
     
-    <!-- app JavaScript -->
+
     <script src="{% static 'js/app.js' %} "></script>
 
     <script src="{% static 'js/showandhide.js' %} "></script>
@@ -843,4 +836,4 @@
     <script src="{% static 'js/maincustomer.js' %}"></script>
 
   </body>
-</html>
+</html> -->

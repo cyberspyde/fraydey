@@ -100,7 +100,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('__all__')
-        exclude = ('user', 'datetime')
+        exclude = ('user', 'datetime', 'last_discount_date')
         widgets = {
             'product_name' : forms.TextInput(attrs={'placeholder': 'Nom', 'class': 'form-control', }),
             'product_price_initial' : forms.NumberInput(attrs={'placeholder': 'Kelgan narx', 'class': 'form-control', }),
@@ -278,6 +278,7 @@ class VendorForm(forms.ModelForm):
     monthly_profit_aim = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'placeholder': 'Oylik foyda maqsadi (so`mda)', 'class': 'form-control'}))
     username = forms.CharField(required=False)
     password = forms.CharField(required=False)
+
     class Meta:
         model = Vendor
         fields = ('__all__')

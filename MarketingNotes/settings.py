@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-+6315_33o8j-cbkbxaf6ysia*6vv#3e)lwma2-4k(senfcx8aw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fraydey.uz', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'mnotes.apps.MnotesConfig',

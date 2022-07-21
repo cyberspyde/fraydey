@@ -90,9 +90,7 @@ def createproduct(request):
             product.save()
 
             if isdebt == True:
-
-
-                BuyOnDebt.objects.create(username=product.user, product_name=product_name, product_count=product_count, product_price=product_price_initial, owner_name=owner_name, owner_phone=owner_phone, due_date=due_date, paid_amount=paid_amount, left_amount=left_amount, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
+                BuyOnDebt.objects.create(username=product.user, product_name=product_name, product_bought_count=product_count, product_bought_price=product_price_initial, owner_name=owner_name, owner_phone=owner_phone, due_date=due_date, paid_amount=paid_amount, left_amount=left_amount, isfullypaid=isfullypaid, ispartlypaid=ispartlypaid)
 
             messages.success(request, 'Mahsulot muvaffaqiyatli yaratildi')
             return redirect('/inventory/')
@@ -307,10 +305,10 @@ def selldebt(request, id):
 
 
 
-            ProductSold.objects.create(username=request.user, product_name=product_name, product_sold_count=product_sold_count, product_sold_price=product_sold_price,
+                ProductSold.objects.create(username=request.user, product_name=product_name, product_sold_count=product_sold_count, product_sold_price=product_sold_price,
                                         customer_name=customer_name, customer_phone=customer_phone, due_date=due_date, paid_amount=paid_amount, 
                                         left_amount=left_amount, isdebt=True, ispartlypaid=ispartlypaid, isfullypaid=isfullypaid, profit=profit)
-            messages.success(request, 'Qarzga berilgan mahsulot muvaffaqiyatli saqlandi.')
+                messages.success(request, 'Qarzga berilgan mahsulot muvaffaqiyatli saqlandi.')
             return redirect('sellondebts')
     else:
 
@@ -572,13 +570,13 @@ def soldproductview(request, id):
 
     try:
         soldproduct_props = ProductSold.objects.get(pk=id, username=request.user)
-        product = Product.objects.get(product_name=soldproduct_props.product_name) 
+        #product = Product.objects.get(product_name=soldproduct_props.product_name, ) 
     except ProductSold.DoesNotExist:
         soldproduct_props = None
-        product = None
+        #product = None
 
        
-    context = {'soldproduct_props' : soldproduct_props, 'product' : product}
+    context = {'soldproduct_props' : soldproduct_props}
     return render(request, 'mnotes/vendorpages/soldproductview.html', context)
 
 @login_required
@@ -653,7 +651,7 @@ def dashboard(request):
     sold_count = 0
     #adding 5 elements
     
-    for q in Product.objects.filter(user=request.user):
+    for q in Product.objects.filter(user=request.user):        
         sold_count = q.sold_count
         if(len(most_sold_5_products) < 3):
             most_sold_5_products.append(q)

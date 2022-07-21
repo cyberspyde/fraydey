@@ -93,7 +93,7 @@ class Product(models.Model):
     sold_count = models.IntegerField(default=0)
     discount = models.IntegerField(default=0)
     discount_in_sum = models.IntegerField(default=0)
-    last_discount_date = models.DateTimeField()
+    last_discount_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         output = str(self.user)
@@ -128,7 +128,7 @@ class BuyOnDebt(models.Model):
     product_bought_count = models.IntegerField(default=0)
     product_bought_price = models.IntegerField(default=0)
     owner_name = models.CharField(max_length=200)
-    owner_phone = models.IntegerField(default=0)
+    owner_phone = models.IntegerField(null=True, default=0)
     date_bought = models.DateField(auto_now_add=True, editable=False)
     due_date = models.DateField(null=True, blank=True)
     username = models.CharField(max_length=200, default='')
@@ -166,8 +166,6 @@ class Vendor(models.Model):
     date_registered = models.DateField(auto_now_add=True, editable=False)
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
-    coin_balance = models.IntegerField(default=0)
-
 
 class Customer(models.Model):
 
@@ -179,6 +177,3 @@ class Customer(models.Model):
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     date_registered = models.DateField(auto_now_add=True, editable=False)
-
-    coin_balance = models.IntegerField(default=0)
-    
