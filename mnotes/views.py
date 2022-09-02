@@ -19,6 +19,8 @@ socketserver.BaseServer.handle_error = lambda *args, **kwargs: None
 handlers.BaseHandler.log_exception = lambda *args, **kwargs: None
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'mnotes/index.html')
 
 def takenoteview(request):
@@ -152,7 +154,6 @@ def productsold(request, id):
     if request.method == 'POST':
         SoldProductForm = ProductSoldForm(request.POST)
         
-        print(SoldProductForm.errors)
         if SoldProductForm.is_valid():
 
             sold_price = SoldProductForm.cleaned_data.get('product_sold_price')
@@ -493,7 +494,6 @@ class signup(View):
         form = self.form_class(request.POST)
         vendor_Form = self.form_class_vendor(request.POST)
         customer_Form = self.form_class_customer(request.POST)
-        print(form.errors, vendor_Form.errors)
         if request.POST.get('vendor'):
             customer_Form = None
             if form.is_valid() and vendor_Form.is_valid():            
@@ -521,7 +521,6 @@ class signup(View):
 
         elif request.POST.get("customer"):
             vendor_Form = None
-            print(form.errors, customer_Form.errors)
             if form.is_valid() and customer_Form.is_valid():
                 customer_name = customer_Form.cleaned_data.get('customer_name')
                 customer_email = customer_Form.cleaned_data.get('customer_email')
@@ -663,7 +662,7 @@ def dashboard(request):
         
 
     #discounts
-    print(todays_date) #last_discount_date=todays_date.strftime("%m-%d-%y")
+    #print(todays_date) #last_discount_date=todays_date.strftime("%m-%d-%y")
     todays_discount_products = Product.objects.filter(user=request.user)
     todays_2_discount_products = []
 
@@ -685,6 +684,7 @@ def dashboard(request):
         return render(request, 'mnotes/customerpages/customerdashboard.html', {})
     except ObjectDoesNotExist:
         print('does not exist')
+	
     
 
 def creatediscount(request, id):
@@ -692,7 +692,6 @@ def creatediscount(request, id):
 
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
-        print(form.errors)
         if form.is_valid():
 
             discount = form.cleaned_data.get('discount')

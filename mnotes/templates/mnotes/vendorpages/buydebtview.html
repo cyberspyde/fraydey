@@ -7,24 +7,16 @@
 <h3 class="text-center text-uppercase font-weight-bold w-100">Qarzga olingan mahsulot haqida to'liq ma'lumot</h3>
       <hr> 
       <div class="row">
-        <div class="col-md-5 text-center">
-          {% if product.product_img %}
-          <img class="img-thumbnail w-100 d-block" width="200px" height="200px" src="{{ product.product_img.url }}" alt="Slide Image" loading="lazy">
-          {% else %}
-          <img class="img-thumbnail w-100 d-block" src="" alt="RASM MAVJUD EMAS" loading="lazy">
-          {% endif %}
-        </div>
 
-
-      <div class="col-md-7 text-center my-auto">      
+      <div class="col-md-10 text-center my-auto">      
       <div><span class="font-weight-bold">Status :</span><span class="ml-2">
       {% if buydebt_props.isfullypaid %}
       <div class="badge badge-success">To'langan</div>
-      {% elif buydebt_props.ispartlypaid%}
+      {% elif buydebt_props.ispartlypaid %}
       <div class="badge badge-warning">Bo'lib to'langan</div>
       <div><span class="font-weight-bold">To'langan pul :</span><span class="ml-2">{{buydebt_props.paid_amount}}</span></div>
       <div><span class="font-weight-bold">Qolgan pul :</span><span class="ml-2">{{buydebt_props.left_amount}}</span></div>
-      {% elif buydebt_props.isdebt %}
+      {% else %}
       <div class="badge badge-danger">To'lanmagan</div>
       {% endif %}  
       </span></div>
