@@ -1,5 +1,7 @@
 # FRAYDEY - Savdogar va mijozlarning hamkori
 
+<img src="static/images/perspective_fraydey.png" width="500" height="300" />
+
 Demo - https://fraydey.uz
 
 **Maqsad** - _Savdogarlarni hisob-kitob ishlarini yengillashtirish, savdodagi tovarlarni bir vaqtni o'zida sonlarini, narxlarini kuzatib borish uchun web dastur yaratish._
@@ -18,8 +20,18 @@ Demo - https://fraydey.uz
 - Savdogarlarni mijozlar bilan bog'laydi, albatta barcha do'kon yoki biznes uchun onlayn mavjudlik muhim, va buni bir do'kon boshqaruvi bilan bir joyda yig'ilishi savdoni yengillashtiradi va ko'proq mijozlarga erishishni taminlaydi
 - Ochiq-kodli dastur, demo versiyani xavfsizligiga ishonmagan foydalanuvchilar uchun dasturni o'z kompyuterlariga o'rnatish uchun [**qo'llanma**](#dasturni-lokal-kompyuter-serverga-ornatish-uchun-qollanma) mavjud
 
+## Rasmlar
 
-
+<kbd><img src="static/images/screen1.jpg" width="200" height="400" />
+<img src="static/images/screen2.jpg" width="200" height="400" />
+<img src="static/images/screen3.jpg" width="200" height="400" />
+<img src="static/images/screen4.jpg" width="200" height="400" />
+<img src="static/images/screen5.jpg" width="200" height="400" />
+<img src="static/images/screen6.jpg" width="200" height="400" />
+<img src="static/images/screen7.jpg" width="200" height="400" />
+<img src="static/images/screen8.jpg" width="200" height="400" />
+<img src="static/images/screen9.jpg" width="200" height="400" />
+ </kbd>
 ## Amalga oshirilgan ishlar
 - [X] Registratsiya sahifasi
     - [X] Savdogarni ro'yxatdan o'tkazish
