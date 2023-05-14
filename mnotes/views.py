@@ -496,6 +496,7 @@ class signup(View):
         customer_Form = self.form_class_customer(request.POST)
         if request.POST.get('vendor'):
             customer_Form = None
+            print(form.errors)
             if form.is_valid() and vendor_Form.is_valid():            
                 vendor_name = vendor_Form.cleaned_data.get('vendor_name')
                 vendor_email = vendor_Form.cleaned_data.get('vendor_email')
@@ -514,13 +515,16 @@ class signup(View):
                     form.save()
                     Vendor.objects.create(vendor_insta=vendor_insta, store_address=store_address, vendor_name=vendor_name, vendor_email=vendor_email, vendor_tg=vendor_tg, vendor_phone_number=vendor_phone_number, store_name=store_name, store_type=store_type, store_website=store_website, date_registered=date_registered, username=username, password=password)
                     messages.success(request, f'{username} uchun Akkount yaratildi, quyidagi forma orqali akkountingizga kiring.')
+                    print("akkount yaratildi")
                     return redirect(to='dashboard')
                 else:
+                    print("Akkount yaratilmadi")
                     messages.error(request, f'{username} uchun akkount yaratilmadi, nomni faqat kichkina xarflarda kiriting.')
                     return redirect(to='signupselect')
 
         elif request.POST.get("customer"):
             vendor_Form = None
+            print(form.errors)
             if form.is_valid() and customer_Form.is_valid():
                 customer_name = customer_Form.cleaned_data.get('customer_name')
                 customer_email = customer_Form.cleaned_data.get('customer_email')
@@ -537,9 +541,11 @@ class signup(View):
                     Customer.objects.create(customer_name=customer_name, customer_email=customer_email, customer_insta=customer_insta, customer_tg=customer_tg, customer_phone_number=customer_phone_number,
                                 username=username, password=password, date_registered=date_registered)
                     messages.success(request, f'{username} uchun Akkount yaratildi, quyidagi forma orqali akkountingizga kiring.')
+                    print("akkount yaratildi")
                     return redirect(to='login')
                 else:                    
                     messages.error(request, f'{username} uchun akkount yaratilmadi, nomni faqat kichkina xarflarda kiriting.')
+                    print("akkount yaratilmadi")
                     return redirect(to='signupselect')
 
         return render(request, self.template_name, {'form' : form, 'vendor_Form' : vendor_Form, 'customer_Form' : customer_Form}) #'vendor_Form' : vendor_Form})
@@ -626,13 +632,13 @@ def dashboard(request):
             date = pr.date_sold.strftime('%m/%d/%Y')
             labels2.append(date)
             data2.append(pure_profit)        
-        
+
             full_profit_day = data2[-1]
 
             if(len(labels2) == 10) and (len(data2) == 10):
                 labels2.shift(date)
                 data2.shift(pure_profit)
-    
+
 
     store_budget = 0
     for t in product_list:
@@ -649,7 +655,7 @@ def dashboard(request):
     count_list = []
     sold_count = 0
     #adding 5 elements
-    
+
     for q in Product.objects.filter(user=request.user):        
         sold_count = q.sold_count
         if(len(most_sold_5_products) < 3):
@@ -659,7 +665,7 @@ def dashboard(request):
             if(t.sold_count < q.sold_count and q.sold_count != 0):
                 most_sold_5_products.remove(t)
                 most_sold_5_products.append(q)
-        
+
 
     #discounts
     #print(todays_date) #last_discount_date=todays_date.strftime("%m-%d-%y")
@@ -669,7 +675,7 @@ def dashboard(request):
     for discount_product in todays_discount_products:
         if(len(todays_2_discount_products) < 2 and discount_product.discount != 0 and discount_product.last_discount_date.strftime("%m-%d-%y") == todays_date.strftime("%m-%d-%y")):
             todays_2_discount_products.append(discount_product)
-            print(discount_product.last_discount_date)
+#            print(discount_product.last_discount_date)
     try:
         vendor = Vendor.objects.get(username=request.user.username)
         vendor_props = Vendor.objects.get(username=request.user)    
@@ -677,15 +683,16 @@ def dashboard(request):
 
         return render(request, 'mnotes/vendorpages/dashboard.html', context)
     except ObjectDoesNotExist:
-        print('does not exist')
+        pass
+#        print('does not exist')
 
     try:
         customer = Customer.objects.get(username=request.user.username)
         return render(request, 'mnotes/customerpages/customerdashboard.html', {})
     except ObjectDoesNotExist:
-        print('does not exist')
-	
-    
+	    pass
+#        print('does not exist')
+
 
 def creatediscount(request, id):
     product = Product.objects.get(pk=id)

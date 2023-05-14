@@ -15,7 +15,7 @@ CSRF_TRUSTED_ORIGINS = ['https://fraydey.uz']
 SECRET_KEY = 'django-insecure-+6315_33o8j-cbkbxaf6ysia*6vv#3e)lwma2-4k(senfcx8aw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -105,13 +105,13 @@ USE_TZ = False
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
-STATIC_ROOT = '/var/www/fraydey.uz/static'
+STATIC_ROOT = '/home/fraydeyu/public_html/fraydey.uz/static'
 
-STATIC_URL = '/static/'
+STATIC_URL = '/fraydey.uz/static/'
 
-MEDIA_ROOT =  '/var/www/fraydey.uz/media'
+MEDIA_ROOT =  '/home/fraydeyu/public_html/fraydey.uz/media'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/fraydey.uz/media/'
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 

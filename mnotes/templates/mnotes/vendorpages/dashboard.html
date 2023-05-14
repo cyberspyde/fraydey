@@ -1,5 +1,4 @@
-
-
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,13 +7,13 @@
       <title>Asosiy bo'lim</title>
       
       <!-- Favicon -->
-      <link rel="shortcut icon" href="/static/images/favicon.ico" />
+      <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
       <!-- <link rel="stylesheet" href="/static/css/backend-plugin.min.css"> -->
-      <link rel="stylesheet" href="/static/css/backend.css?v=1.0.0">
-      <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-      <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-      <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
-      <link rel="stylesheet" href="/static/css/showandhide.css">  
+      <link rel="stylesheet" href="{% static 'css/backend.css' %}">
+      <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}">
+      <link rel="stylesheet" href="{% static 'vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css' %}">
+      <link rel="stylesheet" href="{% static 'vendor/remixicon/fonts/remixicon.css' %}">
+      <link rel="stylesheet" href="{% static 'css/showandhide.css' %}">  
       <style>
         #myfile {
 
@@ -495,7 +494,7 @@
                               <li class="nav-item nav-icon dropdown caption-content">
                                   <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton4"
                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <img src="/static/images/account.png" alt="Rasm mavjud emas" class=""> 
+                                      <img src="{% static 'images/account.png' %}" alt="Rasm mavjud emas" class=""> 
                                   </a>
                                   <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                       <div class="card shadow-none m-0">
@@ -572,7 +571,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-info-light">
-                                        <img src="/static/images/analytics.png" class="img-fluid" alt="image">
+                                        <img src="{% static 'images/analytics.png' %}" class="img-fluid" alt="image">
                                     </div>
                                     <div>
                                         <p class="mb-2">Barcha savdolar</p>
@@ -591,7 +590,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-danger-light">
-                                        <img src="/static/images/budgeting.png" class="img-fluid" alt="image">
+                                        <img src="{% static 'images/budgeting.png' %}" class="img-fluid" alt="image">
                                     </div>
                                     <div>
                                         <p class="mb-2">Do'kon byudjeti</p>
@@ -610,7 +609,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-success-light">
-                                        <img src="/static/images/profit.png" class="img-fluid" alt="image">
+                                        <img src="{% static 'images/profit.png' %}" class="img-fluid" alt="image">
                                     </div>
                                     <div>
                                         <p class="mb-2">Savdo byudjeti</p>
@@ -643,9 +642,8 @@
                                 {% if p.product_img %}
                                 <img src="{{p.product_img.url}}" class="style-img img-fluid m-auto p-2" style="width: 450px; height: 250px;">
                                 {% else %}
-                                <img src="/static/images/cancel.png" class="style-img img-fluid m-auto p-3" alt="Rasm mavjud emas">
+                                <img src="{% static 'images/cancel.png' %}" class="style-img img-fluid m-auto p-3" alt="Rasm mavjud emas">
                                 {% endif %}
-                              <!-- <img alt="" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" width="200px" height="250px">  -->
                             </figure>
                           </div>
                           <div class="item-box-blog-body">
@@ -866,21 +864,21 @@
         </div>
     </footer>
     <!-- Backend Bundle JavaScript -->
-    <script src="/static/js/backend-bundle.min.js"></script>
+    <script src="{% static 'js/backend-bundle.min.js' %}"></script>
     
     <!-- Table Treeview JavaScript -->
-    <script src="/static/js/table-treeview.js"></script>
+    <script src="{% static 'js/table-treeview.js' %}"></script>
     
     <!-- Chart Custom JavaScript -->
-    <script src="/static/js/customizer.js"></script>
+    <script src="{% static 'js/customizer.js' %}"></script>
     
     <!-- Chart Custom JavaScript -->
-    <script async src="/static/js/chart-custom.js"></script>
+    <script async src="{% static 'js/chart-custom.js' %}"></script>
     
     <!-- app JavaScript -->
-    <script src="/static/js/app.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
 
-    <script src="/static/js/showandhide.js"></script>
+    <script src="{% static 'js/showandhide.js' %}"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js" integrity="sha512-tMabqarPtykgDtdtSqCL3uLVM0gS1ZkUAVhRFu1vSEFgvB73niFQWJuvviDyBGBH22Lcau4rHB5p2K2T0Xvr6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
