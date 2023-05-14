@@ -1,5 +1,7 @@
 # FRAYDEY - Savdogar va mijozlarning hamkori
 
+[![GitHub Actions (Django CI)](https://github.com/cyberspyde/fraydey/workflows/Django%20CI/badge.svg)](https://github.com/cyberspyde/fraydey)
+
 <img src="static/images/perspective_fraydey.png" width="500" height="300" />
 
 Demo - https://fraydey.uz
