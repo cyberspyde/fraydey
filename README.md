@@ -3,7 +3,6 @@
 <img src="static/images/perspective_fraydey.png" width="500" height="300" />
 
 Demo - https://fraydey.uz
-
 **Maqsad** - _Savdogarlarni hisob-kitob ishlarini yengillashtirish, savdodagi tovarlarni bir vaqtni o'zida sonlarini, narxlarini kuzatib borish uchun web dastur yaratish._
 
 - [Fraydey](#fraydey---savdogar-va-mijozlarning-hamkori)
@@ -85,4 +84,5 @@ Browser : http://localhost:8000
 Proyektga o'z hissasini qo'shishni xohlaganlar, proyektdan fork yaratgan holatda kamchiliklar va qilinishi zarur bo'lgan ishlar bo'limidagi kamchiliklarni tuzatish bilan yordam berishingiz mumkin, proyektdan boshqa kamchiliklar topsangiz, issues bo'limidan request qiling. 
 
 ## Aloqa
- [![Mailing list : test](http://img.shields.io/badge/Email-gray.svg?style=for-the-badge&logo=gmail)](mailto:cyberspyde@gmail.com) [![Mailing list : test](http://img.shields.io/badge/Telegram-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/cyberspyde_admin)
+ [![Mailing list : test](http://img.shields.io/badge/Email-gray.svg?style=for-the-badge&logo=gmail)](mailto:cyberspyde@gmail.com) [![Mailing list : test](http://img.shields.io/badge/Telegram-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/cyberspyde_admin) [![License: CC BY-NC 4.0](https://img.shields.io/badge/LICENSE-mit-grey.svg?style=for-the-badge)](https://github.com/cyberspyde/fraydey/blob/main/LICENSE.txt)
+
