@@ -7,6 +7,7 @@ Demo - https://fraydey.uz
 
 - [Fraydey](#fraydey---savdogar-va-mijozlarning-hamkori)
    - [Qanday foyda olib keladi?](#fraydey-qanday-foyda-olib-keladi)
+   - [Rasmlar](#rasmlar)
    - [Amalga oshirilgan ishlar](#amalga-oshirilgan-ishlar)
    - [Kamchiliklar va qilinishi zarur bo'lgan ishlar](#kamchiliklar-va-qilinishi-zarur-bolgan-ishlar)
    - [Dasturni lokal kompyuter serverga o'rnatish uchun qo'llanma](#dasturni-lokal-kompyuter-serverga-ornatish-uchun-qollanma)
@@ -18,6 +19,8 @@ Demo - https://fraydey.uz
 - Hisob kitoblarni kamaytiradi, _kunlik_, _oylik_ va _yillik_ savdo hisobotlarini tartib bilan, **grafikda** tasvirlab beradi, bu orqali do'kon yoki biznes qay darajada rivojlanayotganini ko'rish mumkin
 - Savdogarlarni mijozlar bilan bog'laydi, albatta barcha do'kon yoki biznes uchun onlayn mavjudlik muhim, va buni bir do'kon boshqaruvi bilan bir joyda yig'ilishi savdoni yengillashtiradi va ko'proq mijozlarga erishishni taminlaydi
 - Ochiq-kodli dastur, demo versiyani xavfsizligiga ishonmagan foydalanuvchilar uchun dasturni o'z kompyuterlariga o'rnatish uchun [**qo'llanma**](#dasturni-lokal-kompyuter-serverga-ornatish-uchun-qollanma) mavjud
+
+https://github.com/cyberspyde/fraydey/assets/52118091/b4e59855-df41-4978-854d-025f648de7c5
 
 ## Rasmlar
 
