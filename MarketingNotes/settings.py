@@ -12,7 +12,7 @@ CSRF_TRUSTED_ORIGINS = ['https://fraydey.uz']
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+6315_33o8j-cbkbxaf6ysia*6vv#3e)lwma2-4k(senfcx8aw'
+SECRET_KEY = os.getenv('FRAYDEY_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
