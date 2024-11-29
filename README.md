@@ -5,6 +5,9 @@
 <img src="static/images/perspective_fraydey.png" width="500" height="300" />
 
 Demo - https://fraydey.uz
+Test user :
+   login : krtuning
+   password : krtuning
 **Maqsad** - _Savdogarlarni hisob-kitob ishlarini yengillashtirish, savdodagi tovarlarni bir vaqtni o'zida sonlarini, narxlarini kuzatib borish uchun web dastur yaratish._
 
 - [Fraydey](#fraydey---savdogar-va-mijozlarning-hamkori)
