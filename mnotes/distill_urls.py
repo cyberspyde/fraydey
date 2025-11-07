@@ -23,11 +23,19 @@ def get_soldproduct_ids():
     return [{'id': p['id']} for p in DEMO_SOLD_PRODUCTS]
 
 def get_debt_ids():
-    """Get all debt IDs"""
-    from mnotes.demo_data import DEMO_SOLD_PRODUCTS, DEMO_BUY_ON_DEBT
+    """Get all debt IDs for sell debts"""
+    from mnotes.demo_data import DEMO_SOLD_PRODUCTS
     sell_debts = [{'id': p['id']} for p in DEMO_SOLD_PRODUCTS if p.get('isdebt')]
-    buy_debts = [{'id': p['id']} for p in DEMO_BUY_ON_DEBT]
-    return sell_debts, buy_debts
+    return sell_debts if sell_debts else [{'id': 1}]
+
+def get_buy_debt_ids():
+    """Get all debt IDs for buy debts"""
+    from mnotes.demo_data import DEMO_BUY_ON_DEBT
+    return [{'id': p['id']} for p in DEMO_BUY_ON_DEBT] if DEMO_BUY_ON_DEBT else [{'id': 1}]
+
+def get_username():
+    """Get demo username"""
+    return [{'username': 'demo'}]
 
 # Static URL patterns for demo mode
 urlpatterns = [
@@ -35,6 +43,7 @@ urlpatterns = [
     path('login/', login.as_view(template_name='mnotes/vendorpages/login.html'), name='login'),
     path('signup/', signup.as_view(), name='signup'),
     path('logout/', auth_views.LogoutView.as_view(template_name='mnotes/index.html'), name='logout'),
+    path('password-change/', views.changepassword.as_view(), name='password_change'),
     
     # Main pages
     distill_path('', views.index, name='index', distill_func=get_none),
@@ -45,20 +54,33 @@ urlpatterns = [
     # Product pages
     distill_path('createproduct/', views.createproduct, name='createproduct', distill_func=get_none),
     distill_path('productview/<int:id>', views.productview, name='productview', distill_func=get_product_ids),
+    distill_path('editproduct/<int:id>', views.editproduct, name='editproduct', distill_func=get_product_ids),
+    distill_path('deleteproduct/<int:id>', views.deleteproduct, name='deleteproduct', distill_func=get_product_ids),
     distill_path('selectsoldproduct', views.selectsoldproduct, name='selectsoldproduct', distill_func=get_none),
     
     # Sales pages
     distill_path('soldproducts', views.soldproducts, name='soldproducts', distill_func=get_none),
     distill_path('soldproductview/<int:id>', views.soldproductview, name='soldproductview', distill_func=get_soldproduct_ids),
+    distill_path('productsold/<int:id>', views.productsold, name='productsold', distill_func=get_product_ids),
     
     # Debt pages
     distill_path('sellondebts', views.sellondebts, name='sellondebts', distill_func=get_none),
     distill_path('buyondebts', views.buyondebts, name='buyondebts', distill_func=get_none),
     distill_path('selldebtselect/', views.selldebtselect, name='selldebtselect', distill_func=get_none),
     distill_path('buydebtselect/', views.buydebtselect, name='buydebtselect', distill_func=get_none),
+    distill_path('selldebtview/<int:id>', views.selldebtview, name='selldebtview', distill_func=get_debt_ids),
+    distill_path('buydebtview/<int:id>', views.buydebtview, name='buydebtview', distill_func=get_buy_debt_ids),
+    distill_path('selldebt/<int:id>', views.selldebt, name='selldebt', distill_func=get_product_ids),
+    distill_path('buydebt/<int:id>', views.buydebt, name='buydebt', distill_func=get_product_ids),
+    distill_path('paydebt/<int:id>', views.paydebt, name='paydebt', distill_func=get_buy_debt_ids),
+    distill_path('returndebt/<int:id>', views.returndebt, name='returndebt', distill_func=get_debt_ids),
+    
+    # Profile pages
+    distill_path('editprofile/<str:username>', views.editprofile, name='editprofile', distill_func=get_username),
     
     # Other pages
     distill_path('viewdiscounts', views.viewdiscounts, name='viewdiscounts', distill_func=get_none),
     distill_path('creatediscountselect', views.creatediscountselect, name='creatediscountselect', distill_func=get_none),
+    distill_path('creatediscount/<int:id>', views.creatediscount, name='creatediscount', distill_func=get_soldproduct_ids),
     distill_path('reports', views.reports, name='reports', distill_func=get_none),
 ]

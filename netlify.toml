@@ -5,8 +5,27 @@
 
 [build.environment]
   PYTHON_VERSION = "3.11"
-  
+
+# Serve static files directly without redirects
+[[redirects]]
+  from = "/static/*"
+  to = "/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/media/*"
+  to = "/media/:splat"
+  status = 200
+
+# Handle clean URLs - serve index.html from directories
+[[redirects]]
+  from = "/*"
+  to = "/:splat/index.html"
+  status = 200
+  force = false
+
+# Fallback to root index for anything else
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200
+  status = 404
