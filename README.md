@@ -5,6 +5,31 @@
 <img src="static/images/perspective_fraydey.png" width="500" height="300" />
 
 Demo - https://fraydey.uz
+
+## 🎭 Demo Mode Available!
+
+**NEW**: Fraydey now includes a **Demo Mode** for easy demonstration without affecting your data!
+
+**Demo Credentials:**
+- **Username:** `demo`
+- **Password:** `demo123`
+
+**Quick Setup:**
+```bash
+# Enable demo mode
+python toggle_demo_mode.py on
+
+# Setup demo data (first time only)
+python manage.py setup_demo_data
+
+# Disable demo mode
+python toggle_demo_mode.py off
+```
+
+📖 **[Read Full Demo Mode Documentation](DEMO_MODE_README.md)**
+
+---
+
 Test user :
    login : krtuning
    password : krtuning

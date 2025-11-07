@@ -10,11 +10,17 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 import socketserver, json
 from wsgiref import handlers
 from datetime import date, timedelta
 import datetime
 from django.utils import timezone
+
+# Demo mode imports
+from .demo_utils import get_demo_objects_for_model, is_demo_mode
+from .demo_data import get_demo_user, get_demo_profile, get_demo_vendor
+
 socketserver.BaseServer.handle_error = lambda *args, **kwargs: None
 handlers.BaseHandler.log_exception = lambda *args, **kwargs: None
 
@@ -34,9 +40,17 @@ def savednotes(request):
 
 @login_required
 def inventory(request):
-    product_list = Product.objects.filter(user=request.user)
-    username = User.objects.get(pk=request.user.id)
-    user_props = Profile.objects.get(user=request.user)
+    if is_demo_mode():
+        # Use demo data
+        product_list = get_demo_objects_for_model('Product')
+        username = get_demo_user()
+        user_props = get_demo_profile(username)
+    else:
+        # Use real database
+        product_list = Product.objects.filter(user=request.user)
+        username = User.objects.get(pk=request.user.id)
+        user_props = Profile.objects.get(user=request.user)
+    
     context = {'product_list' : product_list, 'user_name' : username, 'user_props' :  user_props}
     return render(request, 'mnotes/vendorpages/inventory.html', context)
 
@@ -59,6 +73,10 @@ def takenote(request):
 @login_required
 def createproduct(request):
     if request.method == 'POST':
+        if is_demo_mode():
+            messages.warning(request, 'Bu demo rejim. Ma\'lumotlar saqlanmaydi. Real tizimda bu mahsulot yaratilgan bo\'lar edi.')
+            return redirect('/inventory/')
+            
         form = ProductForm(request.POST, request.FILES)
         BuyDebtForm = BuyOnDebtForm(request.POST)
         
@@ -103,7 +121,10 @@ def createproduct(request):
     return render(request, 'mnotes/vendorpages/createproduct.html', context)
 
 def productview(request, id):
-    product_props = Product.objects.filter(user=request.user, pk=id)
+    if is_demo_mode():
+        product_props = get_demo_objects_for_model('Product').filter(pk=id)
+    else:
+        product_props = Product.objects.filter(user=request.user, pk=id)
     
     context = {'product_props' : product_props}
     return render(request, 'mnotes/vendorpages/productview.html', context)
@@ -247,8 +268,13 @@ def editproduct(request, id):
     return render(request, 'mnotes/vendorpages/editproduct.html', context)
     
 def sellondebts(request):
-    soldproduct_list = ProductSold.objects.filter(username=request.user)
-    product_list = Product.objects.filter(user=request.user)
+    if is_demo_mode():
+        soldproduct_list = get_demo_objects_for_model('ProductSold')
+        product_list = get_demo_objects_for_model('Product')
+    else:
+        soldproduct_list = ProductSold.objects.filter(username=request.user)
+        product_list = Product.objects.filter(user=request.user)
+        
     sellondebt_list = []
 
     for sl in soldproduct_list:
@@ -260,8 +286,12 @@ def sellondebts(request):
     return render(request, 'mnotes/vendorpages/sellondebts.html', context)
 
 def buyondebts(request):
-    buyondebt_list = BuyOnDebt.objects.filter(username=request.user)
-    product_list = Product.objects.filter(user=request.user)
+    if is_demo_mode():
+        buyondebt_list = get_demo_objects_for_model('BuyOnDebt')
+        product_list = get_demo_objects_for_model('Product')
+    else:
+        buyondebt_list = BuyOnDebt.objects.filter(username=request.user)
+        product_list = Product.objects.filter(user=request.user)
 
     context = {'buyondebt_list' : buyondebt_list, 'product_list' : product_list}
     return render(request, 'mnotes/vendorpages/buyondebts.html', context)
@@ -389,8 +419,12 @@ def buydebtselect(request):
 
 @login_required
 def profile(request):
-    user_props = Profile.objects.get(user=request.user)
-    vendor_props = Vendor.objects.get(username=request.user)
+    if is_demo_mode():
+        user_props = get_demo_profile(get_demo_user())
+        vendor_props = get_demo_vendor(get_demo_user().username)
+    else:
+        user_props = Profile.objects.get(user=request.user)
+        vendor_props = Vendor.objects.get(username=request.user)
 
     return render(request, 'mnotes/vendorpages/profile.html', {'user_props' : user_props, 'vendor_props' : vendor_props})
 
@@ -565,7 +599,10 @@ class changepassword(SuccessMessageMixin, PasswordChangeView):
 
 @login_required
 def soldproducts(request):
-    soldproducts_list = ProductSold.objects.filter(username=request.user)
+    if is_demo_mode():
+        soldproducts_list = get_demo_objects_for_model('ProductSold')
+    else:
+        soldproducts_list = ProductSold.objects.filter(username=request.user)
 
     context = {'soldproducts_list' : soldproducts_list}
     return render(request, 'mnotes/vendorpages/soldproducts.html', context)
@@ -588,11 +625,17 @@ def soldproductview(request, id):
 def dashboard(request):
     vendor = ''
     customer = ''
-    user_props = Profile.objects.get(user=request.user)
     
-    product_list = Product.objects.filter(user=request.user)
+    if is_demo_mode():
+        user_props = get_demo_profile(get_demo_user())
+        product_list = get_demo_objects_for_model('Product')
+        todays_date = timezone.now()
+    else:
+        user_props = Profile.objects.get(user=request.user)
+        product_list = Product.objects.filter(user=request.user)
+        todays_date = timezone.now()
+    
     full_product_initial_price = 0
-    todays_date = timezone.now()
 
     #All product count
     labels = []
@@ -608,7 +651,12 @@ def dashboard(request):
     data3 = []
     product_sold_budget = 0
     full_budget_product_sold = 0
-    queryset3 = ProductSold.objects.filter(username=request.user, date_sold=todays_date)
+    
+    if is_demo_mode():
+        queryset3 = get_demo_objects_for_model('ProductSold').filter(date_sold=todays_date.date())
+    else:
+        queryset3 = ProductSold.objects.filter(username=request.user, date_sold=todays_date)
+        
     for count in queryset3:
         if(count.isfullypaid):
             product_sold_budget += count.product_sold_price * count.product_sold_count
@@ -616,14 +664,19 @@ def dashboard(request):
             labels3.append(date)
             data3.append(product_sold_budget)
 
-            full_budget_product_sold = data3[-1]
+            full_budget_product_sold = data3[-1] if data3 else 0
 
 
     #Daily profit
     labels2 = []
     data2 = []
     pure_profit = 0
-    product_profits = ProductSold.objects.filter(username=request.user, date_sold=todays_date)
+    
+    if is_demo_mode():
+        product_profits = get_demo_objects_for_model('ProductSold').filter(date_sold=todays_date.date())
+    else:
+        product_profits = ProductSold.objects.filter(username=request.user, date_sold=todays_date)
+        
     full_profit_day = 0
     queryset2 = product_profits
     for pr in queryset2:
@@ -633,7 +686,7 @@ def dashboard(request):
             labels2.append(date)
             data2.append(pure_profit)        
 
-            full_profit_day = data2[-1]
+            full_profit_day = data2[-1] if data2 else 0
 
             if(len(labels2) == 10) and (len(data2) == 10):
                 labels2.shift(date)
@@ -644,10 +697,15 @@ def dashboard(request):
     for t in product_list:
         store_budget += t.product_price_initial * t.product_count
 
-    trade_count = ProductSold.objects.filter(username=request.user).count()
+    if is_demo_mode():
+        trade_count = get_demo_objects_for_model('ProductSold').count()
+        all_sold_products = get_demo_objects_for_model('ProductSold')
+    else:
+        trade_count = ProductSold.objects.filter(username=request.user).count()
+        all_sold_products = ProductSold.objects.filter(username=request.user)
 
     trade_budget = 0
-    for k in ProductSold.objects.filter(username=request.user):
+    for k in all_sold_products:
         trade_budget += k.product_sold_price * k.product_sold_count
 
 
@@ -656,7 +714,7 @@ def dashboard(request):
     sold_count = 0
     #adding 5 elements
 
-    for q in Product.objects.filter(user=request.user):        
+    for q in product_list:        
         sold_count = q.sold_count
         if(len(most_sold_5_products) < 3):
             most_sold_5_products.append(q)
@@ -669,7 +727,7 @@ def dashboard(request):
 
     #discounts
     #print(todays_date) #last_discount_date=todays_date.strftime("%m-%d-%y")
-    todays_discount_products = Product.objects.filter(user=request.user)
+    todays_discount_products = product_list
     todays_2_discount_products = []
 
     for discount_product in todays_discount_products:
@@ -677,17 +735,25 @@ def dashboard(request):
             todays_2_discount_products.append(discount_product)
 #            print(discount_product.last_discount_date)
     try:
-        vendor = Vendor.objects.get(username=request.user.username)
-        vendor_props = Vendor.objects.get(username=request.user)    
+        if is_demo_mode():
+            vendor_obj = get_demo_vendor(get_demo_user().username)
+            if vendor_obj:
+                vendor = vendor_obj
+                vendor_props = vendor_obj
+        else:
+            vendor = Vendor.objects.get(username=request.user.username)
+            vendor_props = Vendor.objects.get(username=request.user)
+            
         context = {'todays_2_discount_products' : todays_2_discount_products, 'most_sold_5_products': most_sold_5_products,'trade_budget': trade_budget, 'trade_count': trade_count, 'store_budget': store_budget, 'vendor_props' : vendor_props, 'user_props' : user_props, 'full_budget_product_sold': full_budget_product_sold, 'full_profit_day': full_profit_day, 'pure_profit':pure_profit, 'labels3' : labels3, 'data3' : data3, 'labels': labels, 'data': data, 'labels2' : labels2, 'data2' : data2}
 
         return render(request, 'mnotes/vendorpages/dashboard.html', context)
-    except ObjectDoesNotExist:
+    except (ObjectDoesNotExist, AttributeError):
         pass
 #        print('does not exist')
 
     try:
-        customer = Customer.objects.get(username=request.user.username)
+        if not is_demo_mode():
+            customer = Customer.objects.get(username=request.user.username)
         return render(request, 'mnotes/customerpages/customerdashboard.html', {})
     except ObjectDoesNotExist:
 	    pass

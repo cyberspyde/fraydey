@@ -1,0 +1,16 @@
+{% load static %}
+{% if request.demo_mode or DEMO_MODE %}
+<div class="demo-mode-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="ri-information-line" style="font-size: 24px;"></i>
+                <strong style="font-size: 16px;">DEMO REJIM</strong>
+            </div>
+            <div style="font-size: 14px;">
+                Bu demo versiya - Ma'lumotlar saqlanmaydi | <strong>Login:</strong> demo | <strong>Parol:</strong> demo123
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

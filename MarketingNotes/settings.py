@@ -12,10 +12,14 @@ CSRF_TRUSTED_ORIGINS = ['https://fraydey.uz']
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('FRAYDEY_SECRET_KEY')
+SECRET_KEY = os.getenv('FRAYDEY_SECRET_KEY', 'django-insecure-demo-key-for-development-only-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Demo Mode Configuration
+# Set to True to enable demo mode with pre-populated data and no database writes
+DEMO_MODE = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,6 +49,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'mnotes.demo_middleware.DemoModeMiddleware',  # Demo mode middleware
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -62,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mnotes.context_processors.demo_mode',  # Add demo mode context
             ],
         },
     },
