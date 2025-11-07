@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'multiselectfield',
+    'django_distill',  # Static site generator
 ]
 
 DJANGORESIZED_DEFAULT_SIZE = [100, 100]
@@ -110,15 +111,25 @@ USE_TZ = False
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
-STATIC_ROOT = '/home/fraydeyu/public_html/fraydey.uz/static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATIC_URL = '/fraydey.uz/static/'
+STATIC_URL = '/static/'
 
-MEDIA_ROOT =  '/home/fraydeyu/public_html/fraydey.uz/media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
-MEDIA_URL = '/fraydey.uz/media/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Django Distill settings for static site generation
+DISTILL_DIR = BASE_DIR / 'dist'
+DISTILL_PUBLISH = {
+    'default': {
+        'ENGINE': 'django_distill.backends.filesystem',
+        'PATH': str(BASE_DIR / 'dist'),
+        'PUBLIC_URL': '/',
+    },
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
