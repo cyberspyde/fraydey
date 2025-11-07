@@ -250,12 +250,26 @@ def get_demo_user():
 
 def get_demo_profile(user):
     """Returns a demo profile object"""
+    class DemoImageField:
+        def __init__(self, path):
+            self.name = path
+            self.path = path
+            
+        @property
+        def url(self):
+            if self.name:
+                return f'/media/{self.name}'
+            return ''
+            
+        def __bool__(self):
+            return bool(self.name)
+    
     class DemoProfile:
         def __init__(self, profile_data):
             self.id = profile_data['id']
             self.user = user
             self.bio = profile_data['bio']
-            self.image = profile_data['image']
+            self.image = DemoImageField(profile_data['image']) if profile_data['image'] else None
             
         def __str__(self):
             return self.user.username
@@ -278,10 +292,27 @@ def get_demo_vendor(username):
 
 def get_demo_products(user):
     """Returns demo product objects"""
+    class DemoImageField:
+        def __init__(self, path):
+            self.name = path
+            self.path = path
+            
+        @property
+        def url(self):
+            if self.name:
+                return f'/media/{self.name}'
+            return ''
+            
+        def __bool__(self):
+            return bool(self.name)
+    
     class DemoProduct:
         def __init__(self, product_data):
             for key, value in product_data.items():
-                setattr(self, key, value)
+                if key == 'product_img':
+                    setattr(self, key, DemoImageField(value) if value else None)
+                else:
+                    setattr(self, key, value)
             self.user = user
         
         def __str__(self):
